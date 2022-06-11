@@ -1,0 +1,64 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+composer:
+  stage: build
+  image: lorisleiva/laravel-docker:stable
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
+  script:
+    - composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_LICENSE_KEY}
+    - composer install
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - vendor/
+      - .env
+  only:
+    - main
+    - staging
+    - merge_requests
+
+code_quality:
+  stage: test
+  artifacts:
+    expose_as: "Code Quality Report"
+    paths: [gl-code-quality-report.json]
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+
+phpunit:
+  stage: test
+  image: lorisleiva/laravel-docker:stable
+  dependencies:
+    - composer
+  script:
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan test
+  only:
+    - main
+    - staging
+    - merge_requests
+
+staging:
+  image: curlimages/curl
+  stage: deploy
+  script:
+    - curl -X GET ${FORGE_HOOK}
+  only:
+    - staging
+  dependencies:
+    - phpunit
+
+production:
+  image: curlimages/curl
+  stage: deploy
+  script:
+    - curl -X GET ${ENVOYER_HOOK}
+  only:
+    - main
+  dependencies:
+    - phpunit
