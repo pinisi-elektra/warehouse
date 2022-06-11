@@ -11,11 +11,10 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
-            
-            $table->foreignIdFor('company_id')
+            $table
+                ->foreignId('company_id')
                 ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
 
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('address');
             $table
-                ->foreignId('company_id')
+                ->foreignId('company_group_id')
                 ->constrained()
                 ->onUpdate('cascade');
 

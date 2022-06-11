@@ -27,7 +27,7 @@ class Warehouse extends Resource
                 ->sortable(),
 
             Text::make('Address'),
-            BelongsTo::make('Company'),
+            BelongsTo::make('Company Group'),
         ];
     }
 

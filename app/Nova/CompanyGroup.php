@@ -2,18 +2,19 @@
 
 namespace App\Nova;
 
-use App\Models\UserCompany as Model;
+use App\Models\CompanyGroup as CompanyGroupModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 
-class UserCompany extends Resource
+class CompanyGroup extends Resource
 {
-    public static $model = Model::class;
+    public static $model = CompanyGroupModel::class;
+
+    public static $title = 'name';
 
     public static $group = 'Company';
-
-    public static $title = 'id';
 
     public static $search = [
         ''
@@ -23,8 +24,11 @@ class UserCompany extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User'),
-            BelongsTo::make('Company', 'company', 'App\Nova\Company'),
+            Text::make('Name')
+                ->required()
+                ->sortable(),
+            BelongsTo::make('Company')
+                ->sortable(),
         ];
     }
 

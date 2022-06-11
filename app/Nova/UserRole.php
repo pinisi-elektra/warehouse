@@ -16,6 +16,8 @@ class UserRole extends Resource
      */
     public static $model = \App\Models\UserRole::class;
 
+    public static $group = 'User';
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
