@@ -2,15 +2,15 @@
 
 namespace App\Nova;
 
-use App\Models\Warehouse as WarehouseModel;
+use App\Models\Product as ProductModel;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
-class Warehouse extends Resource
+class Product extends Resource
 {
-    public static $model = WarehouseModel::class;
+    public static $model = ProductModel::class;
 
     public static $title = 'name';
 
@@ -22,12 +22,8 @@ class Warehouse extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')
-                ->required()
-                ->sortable(),
-
-            Text::make('Address'),
-            BelongsTo::make('Company Group'),
+            Text::make('Name')->sortable()->required(),
+            Boolean::make('Is Active')->sortable()->default(true),
         ];
     }
 

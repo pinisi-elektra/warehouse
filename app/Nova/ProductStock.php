@@ -2,32 +2,34 @@
 
 namespace App\Nova;
 
-use App\Models\Warehouse as WarehouseModel;
+use App\Models\ProductStock as ProductStockModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 
-class Warehouse extends Resource
+class ProductStock extends Resource
 {
-    public static $model = WarehouseModel::class;
+    public static $model = ProductStockModel::class;
 
-    public static $title = 'name';
+    public static $title = 'id';
 
     public static $search = [
-        ''
+        'id'
     ];
 
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')
-                ->required()
-                ->sortable(),
 
-            Text::make('Address'),
-            BelongsTo::make('Company Group'),
+            BelongsTo::make('Product'),
+
+            Number::make('Quantity')
+                ->sortable()
+                ->rules('required', 'integer'),
+
+            BelongsTo::make('Warehouse'),
         ];
     }
 

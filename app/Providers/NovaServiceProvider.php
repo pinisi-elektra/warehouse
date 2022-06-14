@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\ProductRequest;
 use App\Models\User;
+use App\Observers\ProductRequestObserver;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Observable;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -17,6 +20,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Observable::make(ProductRequest::class, ProductRequestObserver::class);
     }
 
     /**
