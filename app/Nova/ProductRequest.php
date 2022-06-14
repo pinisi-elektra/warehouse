@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\ProductRequest as ProductRequestModel;
+use App\Nova\Actions\MarkProductRequestDelivered;
 use App\Nova\Actions\VerifyProductRequest;
 use App\Nova\Metrics\ProductPerStatus;
 use App\Nova\Metrics\ProductRequestDeliveredProgress;
@@ -87,7 +88,8 @@ class ProductRequest extends Resource
     public function actions(Request $request): array
     {
         return [
-            (new VerifyProductRequest())->showInline()
+            (new VerifyProductRequest())->showInline(),
+            (new MarkProductRequestDelivered())->showInline()
         ];
     }
 }
