@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\Product as ProductModel;
+use App\Nova\Metrics\ProductValue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
@@ -29,7 +30,9 @@ class Product extends Resource
 
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new ProductValue(),
+        ];
     }
 
     public function filters(Request $request): array

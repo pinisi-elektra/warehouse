@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\ProductStock as ProductStockModel;
+use App\Nova\Metrics\NewProductStock;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;

@@ -4,6 +4,10 @@ namespace App\Nova;
 
 use App\Models\ProductRequest as ProductRequestModel;
 use App\Nova\Actions\VerifyProductRequest;
+use App\Nova\Metrics\ProductPerStatus;
+use App\Nova\Metrics\ProductRequestDeliveredProgress;
+use App\Nova\Metrics\ProductRequestPerDay;
+use App\Nova\Metrics\ProductRequestValue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -63,7 +67,11 @@ class ProductRequest extends Resource
 
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new ProductRequestPerDay(),
+            new ProductPerStatus(),
+            new ProductRequestDeliveredProgress()
+        ];
     }
 
     public function filters(Request $request): array

@@ -3,17 +3,18 @@
 namespace App\Observers;
 
 use App\Models\ProductRequest;
-use App\Services\ProductStock\DecreaseProductStock;
+use App\Services\ProductStock\ModifyProductStock;
+use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 
 class ProductRequestObserver
 {
-    private DecreaseProductStock $decreaseProductStock;
+    private ModifyProductStock $modifyProductStock;
 
-    public function __construct(DecreaseProductStock $decreaseProductStock)
+    public function __construct()
     {
-        $this->decreaseProductStock = new DecreaseProductStock();
+        $this->modifyProductStock= new ModifyProductStock();
     }
 
     public function created(ProductRequest $productRequest)
@@ -25,7 +26,15 @@ class ProductRequestObserver
     {
         if ($productRequest->isDirty('status')) {
             if ($productRequest->status === 'Verified') {
-                $this->decreaseProductStock->handle($productRequest);
+                $this->modifyProductStock
+                    ->decrease()
+                    ->handle($productRequest, $productRequest->original_warehouse_id);
+            }
+
+            if ($productRequest->status === 'Delivered') {
+                $this->modifyProductStock
+                    ->increase()
+                    ->handle($productRequest, $productRequest->destination_warehouse_id);
             }
         }
     }
