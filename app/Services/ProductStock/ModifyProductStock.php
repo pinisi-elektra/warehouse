@@ -28,6 +28,7 @@ class ModifyProductStock
     {
         $product = $productRequest->product;
         $quantity = $productRequest->quantity;
+        $newQuantity = $quantity;
 
         $filter = [
             'product_id' => $product->id,
@@ -35,10 +36,13 @@ class ModifyProductStock
         ];
 
         $productStock = ProductStock::where($filter)->first();
-        if ($this->type === 'increase') {
-            $newQuantity = $productStock->quantity + $quantity;
-        } else {
+
+        if ($productStock) {
             $newQuantity = $productStock->quantity - $quantity;
+
+            if ($this->type === 'increase') {
+                $newQuantity = $productStock->quantity + $quantity;
+            }
         }
 
         $productStock = ProductStock::updateOrCreate($filter, [

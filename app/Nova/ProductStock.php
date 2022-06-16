@@ -6,6 +6,7 @@ use App\Models\ProductStock as ProductStockModel;
 use App\Nova\Metrics\NewProductStock;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Textarea;
@@ -28,10 +29,15 @@ class ProductStock extends Resource
             BelongsTo::make('Product'),
 
             Number::make('Quantity')
-                ->sortable()
-                ->rules('required', 'integer'),
+                ->hideWhenCreating()
+                ->hideWhenUpdating()
+                ->sortable(),
 
             BelongsTo::make('Warehouse'),
+
+            HasMany::make('Activities', 'activities', ProductStockActivity::class),
+
+            HasMany::make('Histories', 'histories', ProductStockHistory::class),
         ];
     }
 

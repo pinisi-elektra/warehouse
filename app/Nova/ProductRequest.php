@@ -59,7 +59,10 @@ class ProductRequest extends Resource
                 ->default('Pending')
                 ->displayUsingLabels(),
 
-            DateTime::make('Created At')->sortable(),
+            DateTime::make('Created At')
+                ->hideWhenUpdating()
+                ->hideWhenCreating()
+                ->sortable(),
         ];
     }
 

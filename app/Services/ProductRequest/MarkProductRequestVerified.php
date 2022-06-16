@@ -14,7 +14,7 @@ class MarkProductRequestVerified
     private function checkProductStock(ProductRequest $productRequest): void {
         $filter = [
             'product_id' => $productRequest->product->getKey(),
-            'warehouse_id' => $productRequest->destination_warehouse_id,
+            'warehouse_id' => $productRequest->original_warehouse_id,
         ];
 
         $productStock = ProductStock::where($filter)->first();

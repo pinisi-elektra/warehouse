@@ -20,7 +20,14 @@ class ProductStockObserver
      */
     public function created(ProductStock $productStock)
     {
-        //
+        $type = self::STOCK_IN;
+
+        ProductStockHistory::create([
+            'user_id' => Auth::id(),
+            'product_stock_id' => $productStock->getKey(),
+            'description' => "$type to {$productStock->quantity}"
+        ]);
+
     }
 
     /**
