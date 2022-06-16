@@ -2,36 +2,34 @@
 
 namespace App\Nova;
 
-use App\Models\ProductStock as ProductStockModel;
-use App\Nova\Metrics\NewProductStock;
+use App\Models\ProductStockHistory as ProductStockHistoryModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Text;
 
-class ProductStock extends Resource
+class ProductStockHistory extends Resource
 {
-    public static $model = ProductStockModel::class;
+    public static $model = ProductStockHistoryModel::class;
 
-    public static $title = 'product.name';
+    public static $title = 'id';
 
     public static $search = [
-        'id'
+        ''
     ];
 
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
-
-            BelongsTo::make('Product'),
-
-            Number::make('Quantity')
-                ->sortable()
-                ->rules('required', 'integer'),
-
-            BelongsTo::make('Warehouse'),
+            BelongsTo::make('Product Stock'),
+            BelongsTo::make('User'),
+            Text::make('Description'),
+            DateTime::make('Created At')
+                ->onlyOnDetail()
+                ->onlyOnIndex()
+                ->sortable(),
         ];
     }
 

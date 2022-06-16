@@ -2,18 +2,19 @@
 
 namespace App\Policies;
 
-use App\Models\ProductStock;
+use App\Models\ProductStockActivity;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProductStockPolicy extends DefaultWarehousePolicy
+class ProductStockActivityPolicy extends DefaultWarehousePolicy
 {
     public function update(User $user, $model): bool
     {
-        if ($user->isRoleMatch("Super Admin")) {
-            return true;
-        }
+        return false;
+    }
 
+    public function delete(User $user, $model): bool
+    {
         return false;
     }
 }

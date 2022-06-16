@@ -4,6 +4,7 @@ namespace App\Services\ProductStock;
 
 use App\Models\ProductRequest;
 use App\Models\ProductStock;
+use App\Models\ProductStockActivity;
 
 class ModifyProductStock
 {
@@ -45,5 +46,18 @@ class ModifyProductStock
         ]);
 
         $productStock->update(['quantity' => $newQuantity]);
+    }
+
+    public function modify(ProductStock $productStock, int $quantity): void
+    {
+        $newQuantity = $productStock->quantity - $quantity;
+
+        if ($this->type === 'increase') {
+            $newQuantity = $productStock->quantity + $quantity;
+        }
+
+        $productStock->update([
+            'quantity' => $newQuantity,
+        ]);
     }
 }

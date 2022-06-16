@@ -11,6 +11,7 @@ use App\Nova\Metrics\ProductRequestPerDay;
 use App\Nova\Metrics\ProductRequestValue;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -32,15 +33,9 @@ class ProductRequest extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Original Warehouse', 'originalWarehouse', Warehouse::class),
+            BelongsTo::make('Origin Warehouse', 'originalWarehouse', Warehouse::class),
 
             BelongsTo::make('Destination Warehouse', 'destinationWarehouse', Warehouse::class),
-
-            BelongsTo::make('User')
-                ->default($request->user()->getKey())
-                ->readonly(function ($request) {
-                    return !$request->user()->isRoleMatch("Super Admin");
-                }),
 
             BelongsTo::make('Product'),
 
@@ -63,6 +58,8 @@ class ProductRequest extends Resource
             ])
                 ->default('Pending')
                 ->displayUsingLabels(),
+
+            DateTime::make('Created At')->sortable(),
         ];
     }
 

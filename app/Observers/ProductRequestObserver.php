@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\ProductRequest;
+use App\Models\ProductStockActivity;
 use App\Services\ProductStock\ModifyProductStock;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
@@ -15,6 +17,18 @@ class ProductRequestObserver
     public function __construct()
     {
         $this->modifyProductStock= new ModifyProductStock();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function creating(ProductRequest $productRequest)
+    {
+        $productRequest->user_id = Auth::id();
+
+        if($productRequest->original_warehouse_id == $productRequest->destination_warehouse_id) {
+            throw new \Exception('The warehouse cannot be the same as the original warehouse');
+        }
     }
 
     public function created(ProductRequest $productRequest)
