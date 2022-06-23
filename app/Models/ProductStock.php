@@ -27,4 +27,12 @@ class ProductStock extends Model
     public function histories() {
         return $this->hasMany(ProductStockHistory::class);
     }
+
+    public function increaseQuantity(int $amount = 1) {
+        $this->increment('quantity', $amount);
+    }
+
+    public function decreaseQuantity(int $amount = 1) {
+        $this->increment('quantity', $amount);
+    }
 }

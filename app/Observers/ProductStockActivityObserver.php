@@ -6,6 +6,9 @@ use App\Models\ProductStock;
 use App\Models\ProductStockActivity;
 use App\Services\ProductStock\ModifyProductStock;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class ProductStockActivityObserver
 {
@@ -18,7 +21,28 @@ class ProductStockActivityObserver
 
     public function creating(ProductStockActivity $productStockActivity)
     {
+        // update auth id
         $productStockActivity->user_id = Auth::id();
+
+        if (!is_null($productStockActivity->product_stock_id)) return;
+
+        // find product stock
+        $productStock = Nova::whenServing(function (NovaRequest $request) use ($productStockActivity): ?ProductStock {
+            $filter = [
+                'warehouse_id' => $request->input('warehouse_id'),
+                'product_id' => $request->input('product_id'),
+            ];
+
+            $productStock = ProductStock::where($filter)->first();
+            if ($productStock) return $productStock;
+
+            // fill initial quantity
+            $filter['quantity'] = 0;
+
+            return ProductStock::create($filter);
+        });
+
+        $productStockActivity->product_stock_id = $productStock->getKey();
     }
 
     /**

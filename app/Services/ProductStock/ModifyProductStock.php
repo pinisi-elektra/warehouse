@@ -5,6 +5,8 @@ namespace App\Services\ProductStock;
 use App\Models\ProductRequest;
 use App\Models\ProductStock;
 use App\Models\ProductStockActivity;
+use App\Models\Warehouse;
+use Illuminate\Support\Facades\Auth;
 
 class ModifyProductStock
 {
@@ -50,6 +52,22 @@ class ModifyProductStock
         ]);
 
         $productStock->update(['quantity' => $newQuantity]);
+
+        $this->updateProductStockActivity();
+    }
+
+    public function updateProductStockActivity() {
+//        $destinationWarehouse = Warehouse::where('id', $productRequest->destination_warehouse_id)->first();
+//
+//        ProductStockActivity::create([
+//            'product_stock_id' => $productStock->getKey(),
+//            'type' => $this->type === 'increase' ? 'in' : 'out',
+//            'quantity' => $quantity,
+//            'user_id' => Auth::id(),
+//            'source' => 'Product Request',
+//            'source_name' => $destinationWarehouse->name,
+//            'source_external_id' => $destinationWarehouse->getKey()
+//        ]);
     }
 
     public function modify(ProductStock $productStock, int $quantity): void

@@ -5,6 +5,7 @@ namespace App\Services\ProductRequest;
 use App\Models\ProductRequest;
 use App\Models\ProductStock;
 use Exception;
+use Laravel\Nova\Fields\ActionFields;
 
 class MarkProductRequestVerified
 {
@@ -37,12 +38,16 @@ class MarkProductRequestVerified
     /**
      * @throws Exception
      */
-    public function handle(ProductRequest $productRequest) {
+    public function handle(ActionFields $fields, ProductRequest $productRequest) {
         $this->checkStatusIsAlreadyVerified($productRequest);
         $this->checkProductStock($productRequest);
 
         $productRequest->update([
             'status' => 'Verified',
+            'shipping_type' => $fields->shipping_type,
+            'shipping_logistic' => $fields->shipping_logistic,
+            'shipping_receipt_number' => $fields->shipping_receipt_number,
+            'shipping_note' => $fields->shipping_note,
         ]);
     }
 }

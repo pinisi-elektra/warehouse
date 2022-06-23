@@ -43,13 +43,13 @@ class ProductRequest extends Resource
 
             Textarea::make('Description'),
 
-            Text::make('Shipping Type'),
+            Text::make('Shipping Type')->readonly(),
 
-            Text::make('Shipping Logistic'),
+            Text::make('Shipping Logistic')->readonly(),
 
-            Text::make('Shipping Receipt Number'),
+            Text::make('Shipping Receipt Number')->readonly(),
 
-            Textarea::make('Shipping Note'),
+            Textarea::make('Shipping Note')->readonly(),
 
             Select::make('Status')->options([
                 'Pending' => 'Pending',

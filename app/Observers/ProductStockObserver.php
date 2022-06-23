@@ -6,6 +6,9 @@ use App\Models\ProductStock;
 use App\Models\ProductStockActivity;
 use App\Models\ProductStockHistory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class ProductStockObserver
 {
@@ -27,7 +30,6 @@ class ProductStockObserver
             'product_stock_id' => $productStock->getKey(),
             'description' => "$type to {$productStock->quantity}"
         ]);
-
     }
 
     /**

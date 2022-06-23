@@ -2,41 +2,29 @@
 
 namespace App\Nova;
 
-use App\Models\ProductStock as ProductStockModel;
-use App\Nova\Metrics\NewProductStock;
+use App\Models\ProductTransaction as ProductTransactionModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Textarea;
 
-class ProductStock extends Resource
+class ProductTransaction extends Resource
 {
-    public static $model = ProductStockModel::class;
+    public static $model = ProductTransactionModel::class;
 
-    public static $title = 'product.name';
+    public static $title = 'id';
 
     public static $search = [
-        'id'
+        ''
     ];
 
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
-
-            BelongsTo::make('Product'),
-
-            Number::make('Quantity')
-                ->hideWhenUpdating()
-                ->sortable(),
-
-            BelongsTo::make('Warehouse'),
-
-            HasMany::make('Activities', 'activities', ProductStockActivity::class),
-
-            HasMany::make('Histories', 'histories', ProductStockHistory::class),
+            BelongsTo::make('Product')->required(),
+            BelongsTo::make('Warehouse')->required(),
+            Number::make('Quantity', 'quantity')->required(),
         ];
     }
 

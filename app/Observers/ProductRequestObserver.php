@@ -16,7 +16,7 @@ class ProductRequestObserver
 
     public function __construct()
     {
-        $this->modifyProductStock= new ModifyProductStock();
+        $this->modifyProductStock = new ModifyProductStock();
     }
 
     /**
@@ -26,7 +26,7 @@ class ProductRequestObserver
     {
         $productRequest->user_id = Auth::id();
 
-        if($productRequest->original_warehouse_id == $productRequest->destination_warehouse_id) {
+        if ($productRequest->original_warehouse_id == $productRequest->destination_warehouse_id) {
             throw new \Exception('The warehouse cannot be the same as the original warehouse');
         }
     }

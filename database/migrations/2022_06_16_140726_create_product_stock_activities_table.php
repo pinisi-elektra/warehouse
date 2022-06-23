@@ -10,8 +10,9 @@ return new class extends Migration {
         Schema::create('product_stock_activities', function (Blueprint $table) {
             $table->id();
 
-            $table->string('source');
-            $table->string('source_name');
+            $table->string('source')->nullable();
+            $table->string('source_name')->nullable();
+            $table->integer('source_external_id')->nullable();
 
             $table->foreignId('product_stock_id')
                 ->constrained()
@@ -24,7 +25,10 @@ return new class extends Migration {
                 ->onDelete('cascade');
 
             $table->enum('type', ['in', 'out'])->default('in');
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
+            $table->integer('quantity_before')->nullable();
+            $table->integer('quantity_after')->nullable();
+
             $table->text('description')->nullable();
 
             $table->timestamps();

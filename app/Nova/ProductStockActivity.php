@@ -3,10 +3,13 @@
 namespace App\Nova;
 
 use App\Models\ProductStockActivity as ProductStockActivityModel;
+use App\Models\Product;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -22,22 +25,61 @@ class ProductStockActivity extends Resource
         ''
     ];
 
+    public function getProductData(): array
+    {
+        return Product::select(['id', 'name'])
+            ->get()->mapWithKeys(function ($item, $key) {
+                return [$item['id'] => $item['name']];
+            })->all();
+    }
+
+    public function getWarehouses(): array
+    {
+        return \App\Models\Warehouse::select(['id', 'name'])
+            ->get()->mapWithKeys(function ($item, $key) {
+                return [$item['id'] => $item['name']];
+            })->all();
+    }
+
     public function fields(Request $request): array
     {
+        $products = $this->getProductData();
+        $warehouses = $this->getWarehouses();
+
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Product Stock', 'productStock')->sortable(),
+
+            Select::make('Type')->options([
+                'in' => 'In',
+                'out' => 'Out',
+            ])
+                ->required()
+                ->sortable(),
+
+            Select::make('Product', 'product_id')
+                ->options($products)
+                ->required()
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $request->product_id = $request->input('product_id');
+
+                    return null;
+                })->onlyOnForms(),
+
+            Select::make('Warehouse', 'warehouse_id')
+                ->options($warehouses)
+                ->required()
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $request->warehouse_id = $request->input('warehouse_id');
+
+                    return null;
+                })->onlyOnForms(),
+
             Textarea::make('Description'),
 
             Number::make('Quantity')->sortable(),
 
-            Select::make('Type')->options([
-                'in' => 'In',
-            ])->sortable(),
-
             Select::make('Source')->options([
                 'Supplier' => 'Supplier',
-                'Internal' => 'Internal'
             ])
                 ->default('Supplier')
                 ->displayUsingLabels(),

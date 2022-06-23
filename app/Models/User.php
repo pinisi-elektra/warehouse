@@ -55,4 +55,14 @@ class User extends Authenticatable
 
         return $this->userRole->role->name == $roleName;
     }
+
+    public function company()
+    {
+        return $this->hasOne('App\Models\UserCompany');
+    }
+
+    public function companyGroup(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\UserCompanyGroup');
+    }
 }
