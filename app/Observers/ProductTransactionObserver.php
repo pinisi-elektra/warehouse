@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\ProductStock;
 use App\Models\ProductTransaction;
 use App\Models\ProductTransactionVendor;
+use App\Models\ProductTransactionWarehouse;
 
 class ProductTransactionObserver
 {
@@ -22,13 +23,26 @@ class ProductTransactionObserver
 
         $productStock = ProductStock::firstOrNew($filter);
 
-        if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_RETURN) {
-            $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
+        if ($productTransaction->productTransactionVendors) {
+            if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_RETURN) {
+                $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
+            }
+
+            if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_PURCHASE) {
+                $productStock->quantity = $productStock->quantity + $productTransaction->quantity;
+            }
         }
 
-        if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_PURCHASE) {
-            $productStock->quantity = $productStock->quantity + $productTransaction->quantity;
+        if ($productTransaction->productTransactionWarehouse) {
+            if ($productTransaction->productTransactionWarehouse->type === ProductTransactionWarehouse::TYPE_IN) {
+                $productStock->quantity = $productStock->quantity + $productTransaction->quantity;
+            }
+
+            if ($productTransaction->productTransactionWarehouse->type === ProductTransactionWarehouse::TYPE_OUT) {
+                $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
+            }
         }
+
 
         $productStock->save();
     }

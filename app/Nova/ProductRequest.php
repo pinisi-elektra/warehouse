@@ -24,6 +24,8 @@ class ProductRequest extends Resource
 
     public static $title = 'id';
 
+    public static $displayInNavigation = false;
+
     public static $search = [
         ''
     ];

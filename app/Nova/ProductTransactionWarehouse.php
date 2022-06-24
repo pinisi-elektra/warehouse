@@ -2,19 +2,21 @@
 
 namespace App\Nova;
 
-use App\Models\ProductTransaction as ProductTransactionModel;
+use App\Models\ProductTransactionWarehouse as ProductTransactionWarehouseModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
-class ProductTransaction extends Resource
+class ProductTransactionWarehouse extends Resource
 {
-    public static $model = ProductTransactionModel::class;
+    public static $model = ProductTransactionWarehouseModel::class;
 
     public static $group = 'Transaction';
+
+    public static $displayInNavigation = false;
 
     public static $title = 'id';
 
@@ -26,25 +28,24 @@ class ProductTransaction extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Product')->required()
+
+            BelongsTo::make('Product Transaction', 'productTransaction', ProductTransaction::class)
+                ->showCreateRelationButton(),
+
+            BelongsTo::make('Destination Warehouse', 'warehouse', Warehouse::class)
                 ->showCreateRelationButton()
                 ->searchable(),
 
-            BelongsTo::make('Warehouse')
-                ->required()
-                ->searchable(),
-
-            Number::make('Quantity', 'quantity')
-                ->required(),
-
-            HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
-                ->nullable()
-                ->canSee(function ($request) {
-                    return $request->user()->isRoleMatch('Super Admin');
-                }),
-
-            HasOne::make('Transaction Warehouse', 'productTransactionWarehouse', ProductTransactionWarehouse::class)
+            Textarea::make('Description')
                 ->nullable(),
+
+            Select::make('Transaction Type', 'type')
+                ->options([
+                    'in' => 'In',
+                    'out' => 'Out',
+                ])
+                ->displayUsingLabels()
+                ->required(),
         ];
     }
 

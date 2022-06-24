@@ -12,6 +12,8 @@ class UserCompanyGroup extends Resource
     public static $model = UserCompanyGroupModel::class;
 
     public static $title = 'id';
+    
+    public static $group = 'Company';
 
     public static $search = [
         ''

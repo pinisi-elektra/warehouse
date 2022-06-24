@@ -70,7 +70,9 @@ class User extends Resource
 
             HasOne::make('Company', 'company'),
 
-            HasMany::make('User Company Groups'),
+            HasOne::make('Role', 'userRole'),
+
+            HasMany::make('User Company Groups', 'companyGroup'),
         ];
     }
 

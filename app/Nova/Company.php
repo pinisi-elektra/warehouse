@@ -27,7 +27,9 @@ class Company extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name'),
-            Image::make('Logo'),
+            Image::make('Logo')
+                ->disk('public')
+                ->maxWidth(50)
         ];
     }
 

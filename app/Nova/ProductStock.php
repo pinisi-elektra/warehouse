@@ -17,6 +17,8 @@ class ProductStock extends Resource
 
     public static $title = 'product.name';
 
+    public static $group = 'Product';
+
     public static $search = [
         'id'
     ];

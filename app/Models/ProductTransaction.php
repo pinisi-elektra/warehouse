@@ -16,8 +16,13 @@ class ProductTransaction extends Model
         return $this->belongsTo('App\Models\Warehouse');
     }
 
-    public function productTransactionVendors()
+    public function productTransactionVendors(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne('App\Models\ProductTransactionVendor');
+    }
+
+    public function productTransactionWarehouse(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne('App\Models\ProductTransactionWarehouse');
     }
 }

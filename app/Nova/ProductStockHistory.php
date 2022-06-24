@@ -13,6 +13,8 @@ class ProductStockHistory extends Resource
 {
     public static $model = ProductStockHistoryModel::class;
 
+    public static $displayInNavigation = false;
+
     public static $title = 'id';
 
     public static $search = [

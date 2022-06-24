@@ -14,8 +14,10 @@ class Warehouse extends Resource
 
     public static $title = 'name';
 
+    public static $group = 'Company';
+
     public static $search = [
-        ''
+        'name'
     ];
 
     public function fields(Request $request): array

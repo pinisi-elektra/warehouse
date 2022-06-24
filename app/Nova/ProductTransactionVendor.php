@@ -14,6 +14,10 @@ class ProductTransactionVendor extends Resource
 {
     public static $model = ProductTransactionVendorModel::class;
 
+    public static $group = 'Transaction';
+
+    public static $displayInNavigation = false;
+
     public static $title = 'id';
 
     public static $search = [

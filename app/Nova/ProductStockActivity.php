@@ -19,6 +19,8 @@ class ProductStockActivity extends Resource
 {
     public static $model = ProductStockActivityModel::class;
 
+    public static $displayInNavigation = false;
+
     public static $title = 'id';
 
     public static $search = [

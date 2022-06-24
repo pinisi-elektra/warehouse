@@ -15,8 +15,10 @@ class Product extends Resource
 
     public static $title = 'name';
 
+    public static $group = 'Product';
+
     public static $search = [
-        ''
+        'name'
     ];
 
     public function fields(Request $request): array

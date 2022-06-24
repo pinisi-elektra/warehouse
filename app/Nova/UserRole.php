@@ -16,6 +16,8 @@ class UserRole extends Resource
      */
     public static $model = \App\Models\UserRole::class;
 
+    public static $displayInNavigation = false;
+
     public static $group = 'User';
 
     /**
