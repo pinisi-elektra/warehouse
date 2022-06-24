@@ -16,6 +16,14 @@ class ProductStockObserver
     const STOCK_OUT = 'Stock Out';
 
     /**
+     * @throws \Exception
+     */
+    public function creating(ProductStock $productStock): void
+    {
+        if ($productStock->quantity < 0) throw new \Exception('Quantity cannot be less than 0');
+    }
+
+    /**
      * Handle the ProductStock "created" event.
      *
      * @param \App\Models\ProductStock $productStock
@@ -37,9 +45,12 @@ class ProductStockObserver
      *
      * @param \App\Models\ProductStock $productStock
      * @return void
+     * @throws \Exception
      */
     public function updating(ProductStock $productStock)
     {
+        if ($productStock->quantity < 0) throw new \Exception('Quantity cannot be less than 0x');
+
         if ($productStock->isDirty('quantity')) {
             $type = self::STOCK_IN;
 

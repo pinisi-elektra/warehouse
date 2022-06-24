@@ -16,4 +16,8 @@ class ProductTransaction extends Model
         return $this->belongsTo('App\Models\Warehouse');
     }
 
+    public function productTransactionVendors()
+    {
+        return $this->hasOne('App\Models\ProductTransactionVendor');
+    }
 }

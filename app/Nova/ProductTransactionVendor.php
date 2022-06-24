@@ -2,17 +2,17 @@
 
 namespace App\Nova;
 
-use App\Models\ProductTransaction as ProductTransactionModel;
+use App\Models\ProductTransactionVendor as ProductTransactionVendorModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 
-class ProductTransaction extends Resource
+class ProductTransactionVendor extends Resource
 {
-    public static $model = ProductTransactionModel::class;
+    public static $model = ProductTransactionVendorModel::class;
 
     public static $title = 'id';
 
@@ -24,12 +24,18 @@ class ProductTransaction extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Product')->required(),
-            BelongsTo::make('Warehouse')->required(),
-            Number::make('Quantity', 'quantity')->required(),
+            Text::make('Vendor Name'),
+            Text::make('Vendor Address'),
+            Text::make('Vendor Phone Number'),
 
-            HasOne::make('Transaction from Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
-                ->nullable(),
+            BelongsTo::make('Product Transaction', 'productTransaction', ProductTransaction::class),
+
+            Select::make('Type')
+                ->options([
+                    ProductTransactionVendorModel::TYPE_PURCHASE => 'Purchase',
+                    ProductTransactionVendorModel::TYPE_RETURN => 'Return',
+                ])
+                ->required(),
         ];
     }
 
