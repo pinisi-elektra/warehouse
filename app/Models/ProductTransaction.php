@@ -29,7 +29,7 @@ class ProductTransaction extends Model
     }
 
     public function productTransactionShipping() {
-        return $this->hasOne('App\Models\ProductTransactionShipping');
+        return $this->hasMany('App\Models\ProductTransactionShipping');
     }
 
     public function project() {

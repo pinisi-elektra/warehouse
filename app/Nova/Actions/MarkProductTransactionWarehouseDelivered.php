@@ -3,12 +3,16 @@
 namespace App\Nova\Actions;
 
 use App\Models\ProductStock;
+use App\Models\ProductTransactionShipping;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class MarkProductTransactionWarehouseDelivered extends Action
@@ -36,6 +40,12 @@ class MarkProductTransactionWarehouseDelivered extends Action
             $productStock = ProductStock::firstOrNew($filter);
             $productStock->quantity = $productStock->quantity + $model->productTransaction->quantity;
             $productStock->save();
+
+//            ProductTransactionShipping::create([
+//                'product_transaction_id' => $model->productTransaction->id,
+//                'photo_evidence' => $fields->photo_evidence,
+//                'shipping_date' => $fields->shipping_date,
+//            ]);
         }
     }
 
@@ -47,6 +57,14 @@ class MarkProductTransactionWarehouseDelivered extends Action
      */
     public function fields(NovaRequest $request)
     {
-        return [];
+        return [
+//            Image::make('Photo Evidence')
+//                ->disk('public')
+//                ->nullable(),
+//
+//            DateTime::make('Received Date', 'shipping_date')
+//                ->sortable()
+//                ->rules('required'),
+        ];
     }
 }

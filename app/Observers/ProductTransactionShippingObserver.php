@@ -23,9 +23,17 @@ class ProductTransactionShippingObserver
     public function created(ProductTransactionShipping $productTransactionShipping)
     {
         if ($productTransactionShipping->productTransaction->productTransactionWarehouse->exists()) {
-            $productTransactionShipping->productTransaction->productTransactionWarehouse->update([
-                'status' => 'shipped'
-            ]);
+            if ($productTransactionShipping->shipping_type == 'send') {
+                $productTransactionShipping->productTransaction->productTransactionWarehouse->update([
+                    'status' => 'shipped'
+                ]);
+            }
+
+            if ($productTransactionShipping->shipping_type == 'received') {
+                $productTransactionShipping->productTransaction->productTransactionWarehouse->update([
+                    'status' => 'delivered'
+                ]);
+            }
         }
     }
 

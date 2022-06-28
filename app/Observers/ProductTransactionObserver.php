@@ -15,11 +15,23 @@ class ProductTransactionObserver
     public function creating(ProductTransaction $productTransaction)
     {
         $productTransaction->created_by = auth()->id();
+
+        $filter = [
+            'product_id' => $productTransaction->product_id,
+            'warehouse_id' => $productTransaction->warehouse_id
+        ];
+
+        if ($productTransaction->productTransactionWarehouse->type == 'return') {
+            $productStock = ProductStock::firstOrNew($filter);
+
+            $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
+
+            $productStock->save();
+        }
     }
 
     public function created(ProductTransaction $productTransaction)
     {
-
     }
 
     public function updated(ProductTransaction $productTransaction)

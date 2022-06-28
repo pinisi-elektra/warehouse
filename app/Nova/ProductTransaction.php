@@ -2,12 +2,14 @@
 
 namespace App\Nova;
 
+use App\Helpers\RoleList;
 use App\Models\ProductTransaction as ProductTransactionModel;
 use App\Nova\Metrics\ProductTransactionPerDay;
 use App\Nova\Metrics\ProductTransactionVendorPerStatus;
 use App\Nova\Metrics\ProductTransactionWarehousePerStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -57,7 +59,7 @@ class ProductTransaction extends Resource
             HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
                 ->canSee(function ($request) {
                     return is_null($this->model()->productTransactionWarehouse)
-                        && $request->user()->isRoleMatch('Super Admin');
+                        && $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
                 })
                 ->nullable(),
 
@@ -67,9 +69,17 @@ class ProductTransaction extends Resource
                 })
                 ->nullable(),
 
-            HasOne::make('Transaction Shipping', 'productTransactionShipping', ProductTransactionShipping::class)
+
+            HasMany::make('Transaction Warehouse History', 'productTransactionWarehouse', ProductTransactionWarehouse::class)
                 ->canSee(function ($request) {
-                    return $request->user()->isRoleMatch('Super Admin');
+                    return is_null($this->model()->productTransactionVendors);
+                })
+                ->hideWhenCreating()
+                ->nullable(),
+
+            HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
+                ->canSee(function ($request) {
+                    return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
                 })
                 ->nullable(),
         ];

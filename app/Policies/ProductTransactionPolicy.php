@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -15,8 +16,8 @@ class ProductTransactionPolicy extends DefaultWarehousePolicy
 
     public function update(User $user, $model): bool
     {
-        if ($user->isRoleMatch('Super Admin')) return true;
-        if ($user->isRoleMatch('Admin') && $model->created_by == $user->id) return true;
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
+        if ($user->isRoleMatch(RoleList::WAREHOUSE_ADMIN) && $model->created_by == $user->id) return true;
 
         return false;
     }
