@@ -28,9 +28,13 @@ class Project extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->required(),
+
+            Text::make('Name')->rules('required'),
+
             Textarea::make('Description')->nullable(),
-            BelongsTo::make('Company')->required()
+
+            BelongsTo::make('Company')
+                ->rules('required')
                 ->showCreateRelationButton()
                 ->searchable(),
         ];

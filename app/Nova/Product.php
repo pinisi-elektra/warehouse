@@ -29,10 +29,20 @@ class Product extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->sortable()->required(),
+
+            Text::make('Name')
+                ->sortable()
+                ->rules('required'),
+
             Text::make('Model')->sortable()->nullable(),
-            BelongsTo::make('Company')->required(),
-            Boolean::make('Is Active')->sortable()->default(true),
+
+            BelongsTo::make('Company')
+                ->rules('required'),
+
+            Boolean::make('Is Active')
+                ->sortable()
+                ->default(true),
+
             HasMany::make('Product Stock', 'productStock', ProductStock::class),
         ];
     }

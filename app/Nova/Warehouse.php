@@ -38,8 +38,9 @@ class Warehouse extends Resource
     {
         return [
             ID::make()->sortable(),
+
             Text::make('Name')
-                ->required()
+                ->rules('required')
                 ->sortable(),
 
             Text::make('Address'),

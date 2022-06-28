@@ -50,7 +50,7 @@ class ProductTransactionWarehouse extends Resource
                     'return' => 'Return',
                 ])
                 ->displayUsingLabels()
-                ->required(),
+                ->rules('required'),
 
             Text::make('Status')
                 ->hideWhenCreating()

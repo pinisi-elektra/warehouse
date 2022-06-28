@@ -48,18 +48,19 @@ class ProductTransaction extends Resource
                 ->help(__("Left this null if the product is not related to a project"))
                 ->nullable(),
 
-            BelongsTo::make('Product')->required()
+            BelongsTo::make('Product')
+                ->rules('required')
                 ->showCreateRelationButton()
                 ->searchable(),
 
             BelongsTo::make('Warehouse')
-                ->required()
+                ->rules('required')
                 ->showCreateRelationButton()
                 ->searchable(),
 
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1')
-                ->required(),
+                ->rules('required'),
 
             HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
                 ->canSee(function ($request) {

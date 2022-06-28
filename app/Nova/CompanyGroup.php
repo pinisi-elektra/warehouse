@@ -26,9 +26,11 @@ class CompanyGroup extends Resource
     {
         return [
             ID::make()->sortable(),
+
             Text::make('Name')
-                ->required()
+                ->rules('required')
                 ->sortable(),
+
             BelongsTo::make('Company')
                 ->sortable(),
         ];
