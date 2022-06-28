@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductTransaction extends Model
 {
+    protected $with = ['productTransactionWarehouse'];
+
     public function product()
     {
         return $this->belongsTo('App\Models\Product');
@@ -24,5 +26,9 @@ class ProductTransaction extends Model
     public function productTransactionWarehouse(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne('App\Models\ProductTransactionWarehouse');
+    }
+
+    public function productTransactionShipping() {
+        return $this->hasOne('App\Models\ProductTransactionShipping');
     }
 }

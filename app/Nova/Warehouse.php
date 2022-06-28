@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\Warehouse as WarehouseModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -29,7 +30,10 @@ class Warehouse extends Resource
                 ->sortable(),
 
             Text::make('Address'),
+
             BelongsTo::make('Company Group'),
+
+            HasMany::make('Product Stock', 'productStock'),
         ];
     }
 

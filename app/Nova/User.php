@@ -68,9 +68,9 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            HasOne::make('Company', 'company'),
+            HasOne::make('Company', 'company', UserCompany::class),
 
-            HasOne::make('Role', 'userRole'),
+            HasOne::make('Role', 'userRole', UserRole::class),
 
             HasMany::make('User Company Groups', 'companyGroup'),
         ];

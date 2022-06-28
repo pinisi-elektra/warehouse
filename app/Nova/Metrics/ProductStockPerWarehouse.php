@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\ProductRequest;
+use App\Models\ProductStock;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\Partition;
 
-class ProductRequestPerDay extends Trend
+class ProductStockPerWarehouse extends Partition
 {
     /**
      * Calculate the value of the metric.
@@ -16,21 +16,7 @@ class ProductRequestPerDay extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, ProductRequest::class);
-    }
-
-    /**
-     * Get the ranges available for the metric.
-     *
-     * @return array
-     */
-    public function ranges()
-    {
-        return [
-            30 => __('30 Days'),
-            60 => __('60 Days'),
-            90 => __('90 Days'),
-        ];
+        return $this->count($request, ProductStock::class, 'warehouse_id');
     }
 
     /**
@@ -50,6 +36,6 @@ class ProductRequestPerDay extends Trend
      */
     public function uriKey()
     {
-        return 'product-request-per-day';
+        return 'product-stock-per-warehouse';
     }
 }

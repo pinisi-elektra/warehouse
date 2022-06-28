@@ -5,10 +5,14 @@ namespace App\Providers;
 use App\Models\ProductRequest;
 use App\Models\ProductStockActivity;
 use App\Models\ProductTransaction;
+use App\Models\ProductTransactionVendor;
 use App\Models\User;
+use App\Models\ProductTransactionShipping;
 use App\Observers\ProductRequestObserver;
 use App\Observers\ProductStockActivityObserver;
 use App\Observers\ProductTransactionObserver;
+use App\Observers\ProductTransactionShippingObserver;
+use App\Observers\ProductTransactionVendorObserver;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -28,6 +32,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Observable::make(ProductRequest::class, ProductRequestObserver::class);
         Observable::make(ProductStockActivity::class, ProductStockActivityObserver::class);
         Observable::make(ProductTransaction::class, ProductTransactionObserver::class);
+        Observable::make(ProductTransactionShipping::class, ProductTransactionShippingObserver::class);
+        Observable::make(ProductTransactionVendor::class, ProductTransactionVendorObserver::class);
     }
 
     /**

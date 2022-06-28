@@ -36,16 +36,24 @@ class ProductTransactionWarehouse extends Resource
                 ->showCreateRelationButton()
                 ->searchable(),
 
+            Text::make('Destination Warehouse Name')
+                ->hideWhenUpdating()
+                ->hideWhenCreating(),
+
             Textarea::make('Description')
                 ->nullable(),
 
             Select::make('Transaction Type', 'type')
                 ->options([
-                    'in' => 'In',
-                    'out' => 'Out',
+                    'request' => 'Request',
+                    'direct_move' => 'Direct Move',
+                    'return' => 'Return',
                 ])
                 ->displayUsingLabels()
                 ->required(),
+
+            Text::make('Status')
+                ->hideWhenCreating()
         ];
     }
 
@@ -66,6 +74,8 @@ class ProductTransactionWarehouse extends Resource
 
     public function actions(Request $request): array
     {
-        return [];
+        return [
+            new Actions\MarkProductTransactionWarehouseDelivered,
+        ];
     }
 }

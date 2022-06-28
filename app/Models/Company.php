@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Company extends Model
 {
+    use BlameableTrait;
+
     protected $fillable = ['name', 'logo'];
 }

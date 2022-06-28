@@ -7,20 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('company_groups', function (Blueprint $table) {
+        Schema::create('product_transaction_shippings', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
-            
-            $table
-                ->foreignId('company_id')
+            $table->foreignId('product_transaction_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->integer('deleted_by')->nullable();
+            $table->string('logistic_name');
+            $table->string('logistic_tracking_number');
+            $table->string('photo_evidence')->nullable();
 
             $table->timestamps();
         });
@@ -28,6 +25,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('company_groups');
+        Schema::dropIfExists('product_transaction_shippings');
     }
 };

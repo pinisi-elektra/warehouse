@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Models\ProductStock as ProductStockModel;
 use App\Nova\Metrics\NewProductStock;
+use App\Nova\Metrics\ProductStockPerWarehouse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -44,7 +45,9 @@ class ProductStock extends Resource
 
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new ProductStockPerWarehouse()
+        ];
     }
 
     public function filters(Request $request): array

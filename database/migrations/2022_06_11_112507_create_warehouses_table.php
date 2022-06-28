@@ -14,8 +14,11 @@ return new class extends Migration {
             $table->string('address');
             $table
                 ->foreignId('company_group_id')
-                ->constrained()
-                ->onUpdate('cascade');
+                ->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
 
             $table->timestamps();
         });

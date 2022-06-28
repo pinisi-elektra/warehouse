@@ -3,6 +3,10 @@
 namespace App\Nova;
 
 use App\Models\ProductTransaction as ProductTransactionModel;
+use App\Nova\Actions\MarkProductTransactionWarehouseRejected;
+use App\Nova\Metrics\ProductTransactionPerDay;
+use App\Nova\Metrics\ProductTransactionVendorPerStatus;
+use App\Nova\Metrics\ProductTransactionWarehousePerStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
@@ -32,6 +36,7 @@ class ProductTransaction extends Resource
 
             BelongsTo::make('Warehouse')
                 ->required()
+                ->showCreateRelationButton()
                 ->searchable(),
 
             Number::make('Quantity', 'quantity')
@@ -40,17 +45,32 @@ class ProductTransaction extends Resource
             HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
                 ->nullable()
                 ->canSee(function ($request) {
-                    return $request->user()->isRoleMatch('Super Admin');
+                    return is_null($this->model()->productTransactionWarehouse)
+                        && $request->user()->isRoleMatch('Super Admin');
                 }),
 
             HasOne::make('Transaction Warehouse', 'productTransactionWarehouse', ProductTransactionWarehouse::class)
+                ->canSee(function ($request) {
+                    return is_null($this->model()->productTransactionVendors);
+                })
+                ->nullable(),
+
+            HasOne::make('Transaction Shipping', 'productTransactionShipping', ProductTransactionShipping::class)
+                ->canSee(function ($request) {
+                    return $request->user()->isRoleMatch('Super Admin');
+                })
                 ->nullable(),
         ];
     }
 
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new ProductTransactionPerDay(),
+            new ProductTransactionWarehousePerStatus(),
+            new ProductTransactionVendorPerStatus(),
+//            new MarkProductTransactionWarehouseRejected()
+        ];
     }
 
     public function filters(Request $request): array

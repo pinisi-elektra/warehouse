@@ -11,7 +11,18 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
+            
             $table->boolean('is_active')->default(true);
+
+            $table
+                ->foreignId('company_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
 
             $table->timestamps();
         });

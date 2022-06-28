@@ -13,7 +13,7 @@ class UserCompany extends Resource
 
     public static $group = 'Company';
 
-    public static $title = 'id';
+    public static $title = 'company.name';
 
     public static $search = [
         ''
@@ -24,7 +24,7 @@ class UserCompany extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('User'),
-            BelongsTo::make('Company', 'company', 'App\Nova\Company'),
+            BelongsTo::make('Company', 'company', 'App\Nova\Company')->showCreateRelationButton(),
         ];
     }
 

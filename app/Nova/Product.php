@@ -5,7 +5,9 @@ namespace App\Nova;
 use App\Models\Product as ProductModel;
 use App\Nova\Metrics\ProductValue;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -26,7 +28,10 @@ class Product extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->sortable()->required(),
+            Text::make('Model')->sortable()->nullable(),
+            BelongsTo::make('Company')->required(),
             Boolean::make('Is Active')->sortable()->default(true),
+            HasMany::make('Product Stock', 'productStock', ProductStock::class),
         ];
     }
 

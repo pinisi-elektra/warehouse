@@ -15,36 +15,6 @@ class ProductTransactionObserver
     public function creating(ProductTransaction $productTransaction)
     {
         $productTransaction->created_by = auth()->id();
-
-        $filter = [
-            'product_id' => $productTransaction->product_id,
-            'warehouse_id' => $productTransaction->warehouse_id,
-        ];
-
-        $productStock = ProductStock::firstOrNew($filter);
-
-        if ($productTransaction->productTransactionVendors) {
-            if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_RETURN) {
-                $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
-            }
-
-            if ($productTransaction->productTransactionVendors->type === ProductTransactionVendor::TYPE_PURCHASE) {
-                $productStock->quantity = $productStock->quantity + $productTransaction->quantity;
-            }
-        }
-
-        if ($productTransaction->productTransactionWarehouse) {
-            if ($productTransaction->productTransactionWarehouse->type === ProductTransactionWarehouse::TYPE_IN) {
-                $productStock->quantity = $productStock->quantity + $productTransaction->quantity;
-            }
-
-            if ($productTransaction->productTransactionWarehouse->type === ProductTransactionWarehouse::TYPE_OUT) {
-                $productStock->quantity = $productStock->quantity - $productTransaction->quantity;
-            }
-        }
-
-
-        $productStock->save();
     }
 
     public function created(ProductTransaction $productTransaction)

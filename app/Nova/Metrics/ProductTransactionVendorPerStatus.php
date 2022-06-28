@@ -3,11 +3,18 @@
 namespace App\Nova\Metrics;
 
 use App\Models\ProductRequest;
+use App\Models\ProductTransaction;
+use App\Models\ProductTransactionVendor;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
 
-class ProductPerStatus extends Partition
+class ProductTransactionVendorPerStatus extends Partition
 {
+    public function name()
+    {
+        return "Product Vendor Status";
+    }
+
     /**
      * Calculate the value of the metric.
      *
@@ -16,7 +23,7 @@ class ProductPerStatus extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, ProductRequest::class, 'status');
+        return $this->count($request, ProductTransactionVendor::class, 'type');
     }
 
     /**
@@ -26,7 +33,7 @@ class ProductPerStatus extends Partition
      */
     public function cacheFor()
     {
-        // return now()->addMinutes(5);
+         return now()->addMinutes(5);
     }
 
     /**
@@ -36,6 +43,6 @@ class ProductPerStatus extends Partition
      */
     public function uriKey()
     {
-        return 'product-per-status';
+        return 'product-vendor-per-status';
     }
 }

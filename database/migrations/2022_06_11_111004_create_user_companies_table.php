@@ -12,13 +12,15 @@ return new class extends Migration {
 
             $table
                 ->foreignId('company_id')
-                ->constrained()
-                ->onUpdate('cascade');
+                ->constrained()->cascadeOnUpdate()->cascadeOnDelete();
 
             $table
                 ->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+                ->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
 
             $table->timestamps();
         });

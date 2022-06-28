@@ -10,4 +10,9 @@ class Warehouse extends Model
     {
         return $this->belongsTo(CompanyGroup::class);
     }
+
+    public function productStock(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProductStock::class);
+    }
 }

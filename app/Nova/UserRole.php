@@ -25,7 +25,7 @@ class UserRole extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -47,7 +47,7 @@ class UserRole extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('User'),
-            BelongsTo::make('Role')
+            BelongsTo::make('Role')->showCreateRelationButton()
         ];
     }
 

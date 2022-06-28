@@ -5,7 +5,7 @@ namespace App\Nova;
 use App\Models\ProductRequest as ProductRequestModel;
 use App\Nova\Actions\MarkProductRequestDelivered;
 use App\Nova\Actions\VerifyProductRequest;
-use App\Nova\Metrics\ProductPerStatus;
+use App\Nova\Metrics\ProductTransactionWarehousePerStatus;
 use App\Nova\Metrics\ProductRequestDeliveredProgress;
 use App\Nova\Metrics\ProductRequestPerDay;
 use App\Nova\Metrics\ProductRequestValue;
@@ -71,8 +71,7 @@ class ProductRequest extends Resource
     public function cards(Request $request): array
     {
         return [
-            new ProductRequestPerDay(),
-            new ProductPerStatus(),
+            new ProductTransactionWarehousePerStatus(),
             new ProductRequestDeliveredProgress()
         ];
     }
