@@ -37,7 +37,7 @@ class Product extends Resource
         ];
     }
 
-    public static function indexQuery(NovaRequest $request, $query)
+    public static function indexQuery(NovaRequest $request, $query): \Illuminate\Database\Eloquent\Builder
     {
         if ($request->user()->isRoleMatch(RoleList::WAREHOUSE_ADMIN)) {
             return $query

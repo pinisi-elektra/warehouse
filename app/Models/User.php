@@ -49,9 +49,7 @@ class User extends Authenticatable
 
     public function isRoleMatch(string $roleName): bool
     {
-        if (!isset($this->userRole->role->name)) {
-            return false;
-        }
+        if (is_null($this->userRole->role->name)) return false;
 
         return $this->userRole->role->name == $roleName;
     }

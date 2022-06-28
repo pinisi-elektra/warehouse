@@ -2,12 +2,22 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
+use App\Helpers\RoleList;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CompanyPolicy extends DefaultWarehousePolicy
 {
-    use HandlesAuthorization;
+    public function viewAny(User $user): bool
+    {
+        if ($user->isRoleMatch(RoleList::WAREHOUSE_ADMIN)) return false;
 
+        return parent::viewAny($user);
+    }
+
+    public function view(User $user, $model): bool
+    {
+        if ($user->isRoleMatch(RoleList::WAREHOUSE_ADMIN)) return false;
+
+        return parent::viewAny($user);
+    }
 }
