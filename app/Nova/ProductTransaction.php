@@ -59,8 +59,7 @@ class ProductTransaction extends Resource
                 ->searchable(),
 
             Number::make('Quantity', 'quantity')
-                ->rules('required', 'numeric', 'min:1')
-                ->rules('required'),
+                ->rules('required', 'numeric', 'min:1'),
 
             HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
                 ->canSee(function ($request) {
