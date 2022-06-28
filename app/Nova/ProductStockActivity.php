@@ -55,6 +55,7 @@ class ProductStockActivity extends Resource
                 'in' => 'In',
                 'out' => 'Out',
             ])
+                ->displayUsingLabels()
                 ->required()
                 ->sortable(),
 

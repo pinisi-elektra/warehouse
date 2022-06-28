@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ProductStock extends Resource
 {
@@ -23,6 +24,13 @@ class ProductStock extends Resource
     public static $search = [
         'id'
     ];
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereHas('product', function ($query) use ($request) {
+            $query->where('company_id', $request->user()->company->company_id);
+        });
+    }
 
     public function fields(Request $request): array
     {

@@ -31,4 +31,8 @@ class ProductTransaction extends Model
     public function productTransactionShipping() {
         return $this->hasOne('App\Models\ProductTransactionShipping');
     }
+
+    public function project() {
+        return $this->belongsTo('App\Models\Project');
+    }
 }

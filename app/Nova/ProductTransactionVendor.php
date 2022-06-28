@@ -39,7 +39,8 @@ class ProductTransactionVendor extends Resource
                     ProductTransactionVendorModel::TYPE_PURCHASE => 'Purchase',
                     ProductTransactionVendorModel::TYPE_RETURN => 'Return',
                 ])
-                ->required(),
+                ->required()
+                ->displayUsingLabels(),
         ];
     }
 

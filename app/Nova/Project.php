@@ -2,36 +2,37 @@
 
 namespace App\Nova;
 
-use App\Models\Company as Model;
+use App\Models\Project as ProjectModel;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Storable;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
-class Company extends Resource
+class Project extends Resource
 {
-    public static $model = Model::class;
+    public static $model = ProjectModel::class;
 
     public static $title = 'name';
 
     public static $group = 'Company';
 
+    public static $displayInNavigation = false;
+
     public static $search = [
         ''
     ];
+
 
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
-            Image::make('Logo')
-                ->disk('public')
-                ->maxWidth(50),
-            HasMany::make('Projects', 'projects', Project::class),
+            Text::make('Name')->required(),
+            Textarea::make('Description')->nullable(),
+            BelongsTo::make('Company')->required()
+                ->showCreateRelationButton()
+                ->searchable(),
         ];
     }
 

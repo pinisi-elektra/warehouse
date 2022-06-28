@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Helpers\RoleList;
 use App\Services\ProductRequest\MarkProductRequestVerified;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +37,7 @@ class VerifyProductRequest extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        if (!Auth::user()->isRoleMatch("Super Admin")) {
+        if (!Auth::user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
             throw new \Exception("You are not authorized to perform this action.");
         }
 

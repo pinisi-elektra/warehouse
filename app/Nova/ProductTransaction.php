@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Models\ProductTransaction as ProductTransactionModel;
-use App\Nova\Actions\MarkProductTransactionWarehouseRejected;
 use App\Nova\Metrics\ProductTransactionPerDay;
 use App\Nova\Metrics\ProductTransactionVendorPerStatus;
 use App\Nova\Metrics\ProductTransactionWarehousePerStatus;
@@ -12,7 +11,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ProductTransaction extends Resource
 {
@@ -26,10 +25,22 @@ class ProductTransaction extends Resource
         ''
     ];
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->whereHas('product', function ($query) use ($request) {
+            $query->where('company_id', $request->user()->company->company_id);
+        });
+    }
+
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
+
+            BelongsTo::make('Project', 'project', Project::class)
+                ->help(__("Left this null if the product is not related to a project"))
+                ->nullable(),
+
             BelongsTo::make('Product')->required()
                 ->showCreateRelationButton()
                 ->searchable(),
@@ -40,14 +51,15 @@ class ProductTransaction extends Resource
                 ->searchable(),
 
             Number::make('Quantity', 'quantity')
+                ->rules('required', 'numeric', 'min:1')
                 ->required(),
 
             HasOne::make('Transaction Vendor', 'productTransactionVendors', ProductTransactionVendor::class)
-                ->nullable()
                 ->canSee(function ($request) {
                     return is_null($this->model()->productTransactionWarehouse)
                         && $request->user()->isRoleMatch('Super Admin');
-                }),
+                })
+                ->nullable(),
 
             HasOne::make('Transaction Warehouse', 'productTransactionWarehouse', ProductTransactionWarehouse::class)
                 ->canSee(function ($request) {

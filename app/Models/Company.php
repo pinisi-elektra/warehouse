@@ -10,4 +10,8 @@ class Company extends Model
     use BlameableTrait;
 
     protected $fillable = ['name', 'logo'];
+
+    public function projects() {
+        return $this->hasMany('App\Models\Project');
+    }
 }

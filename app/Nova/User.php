@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Helpers\RoleList;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsTo;
