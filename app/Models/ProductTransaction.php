@@ -23,12 +23,13 @@ class ProductTransaction extends Model
         return $this->hasOne('App\Models\ProductTransactionVendor');
     }
 
-    public function productTransactionWarehouse(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function productTransactionWarehouse()
     {
         return $this->hasOne('App\Models\ProductTransactionWarehouse');
     }
 
-    public function productTransactionShipping() {
+    public function productTransactionShipping(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany('App\Models\ProductTransactionShipping');
     }
 

@@ -75,7 +75,7 @@ class ProductTransactionWarehouse extends Resource
     public function actions(Request $request): array
     {
         return [
-            new Actions\MarkProductTransactionWarehouseDelivered,
+            // new Actions\MarkProductTransactionWarehouseDelivered,
         ];
     }
 }

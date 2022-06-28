@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use Alexwenzel\DependencyContainer\DependencyContainer;
+use Alexwenzel\DependencyContainer\HasDependencies;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction as ProductTransactionModel;
 use App\Nova\Metrics\ProductTransactionPerDay;
@@ -13,10 +15,13 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ProductTransaction extends Resource
 {
+    use HasDependencies;
+
     public static $model = ProductTransactionModel::class;
 
     public static $group = 'Transaction';
@@ -69,14 +74,6 @@ class ProductTransaction extends Resource
                 })
                 ->nullable(),
 
-
-            HasMany::make('Transaction Warehouse History', 'productTransactionWarehouse', ProductTransactionWarehouse::class)
-                ->canSee(function ($request) {
-                    return is_null($this->model()->productTransactionVendors);
-                })
-                ->hideWhenCreating()
-                ->nullable(),
-
             HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
                 ->canSee(function ($request) {
                     return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
@@ -91,7 +88,6 @@ class ProductTransaction extends Resource
             new ProductTransactionPerDay(),
             new ProductTransactionWarehousePerStatus(),
             new ProductTransactionVendorPerStatus(),
-//            new MarkProductTransactionWarehouseRejected()
         ];
     }
 

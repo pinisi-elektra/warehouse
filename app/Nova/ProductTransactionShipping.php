@@ -2,11 +2,11 @@
 
 namespace App\Nova;
 
+use Alexwenzel\DependencyContainer\DependencyContainer;
+use Alexwenzel\DependencyContainer\HasDependencies;
 use App\Models\ProductTransactionShipping as ProductTransactionShippingModel;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
@@ -14,7 +14,9 @@ use Laravel\Nova\Fields\Text;
 
 class ProductTransactionShipping extends Resource
 {
-    public static $model = ProductTransactionShippingModel::class;
+    use HasDependencies;
+
+    public static string $model = ProductTransactionShippingModel::class;
 
     public static $title = 'id';
 
@@ -28,16 +30,8 @@ class ProductTransactionShipping extends Resource
     {
         return [
             ID::make()->sortable(),
-            Select::make('Shipping Method')
-                ->options([
-                    'direct_pickup' => 'Direct Pickup',
-                    'logistic' => 'Logistics',
-                ])
-                ->help(__("Fill this when shipping type is send"))
-                ->displayUsingLabels()
-                ->sortable(),
 
-            Select::make('Shipping Type')
+            Select::make('Shipping Type', 'shipping_type')
                 ->options([
                     'send' => 'Send',
                     'received' => 'Received',
@@ -45,9 +39,20 @@ class ProductTransactionShipping extends Resource
                 ->displayUsingLabels()
                 ->sortable(),
 
-            Text::make('Logistic Name'),
+            DependencyContainer::make([
+                Select::make('Shipping Method')
+                    ->options([
+                        'direct_pickup' => 'Direct Pickup',
+                        'logistic' => 'Logistics',
+                    ])
+                    ->help(__("Fill this when shipping type is send"))
+                    ->displayUsingLabels()
+                    ->sortable(),
 
-            Text::make('Logistic Tracking Number'),
+                Text::make('Logistic Name'),
+
+                Text::make('Logistic Tracking Number'),
+            ])->dependsOn('shipping_type', 'send'),
 
             Image::make('Photo Evidence')
                 ->disk('public')

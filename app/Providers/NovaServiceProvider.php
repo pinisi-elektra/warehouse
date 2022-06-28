@@ -30,7 +30,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Observable::make(ProductRequest::class, ProductRequestObserver::class);
-        Observable::make(ProductStockActivity::class, ProductStockActivityObserver::class);
         Observable::make(ProductTransaction::class, ProductTransactionObserver::class);
         Observable::make(ProductTransactionShipping::class, ProductTransactionShippingObserver::class);
         Observable::make(ProductTransactionVendor::class, ProductTransactionVendorObserver::class);

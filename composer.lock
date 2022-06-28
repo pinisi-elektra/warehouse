@@ -4,8 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd6e34ed324f4a0d453ed8f0cbf76c87",
+    "content-hash": "9b5dcbdb9d1ba4f52ec7be68398954b8",
     "packages": [
+        {
+            "name": "alexwenzel/nova-dependency-container",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexwenzel/nova-dependency-container.git",
+                "reference": "9c16f3804e3901d1083d042e8b3a4c66a239d2e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexwenzel/nova-dependency-container/zipball/9c16f3804e3901d1083d042e8b3a4c66a239d2e6",
+                "reference": "9c16f3804e3901d1083d042e8b3a4c66a239d2e6",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^9.0",
+                "laravel/nova": "^4.0",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Alexwenzel\\DependencyContainer\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alexwenzel\\DependencyContainer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alexwenzel",
+                    "email": "alexander.wenzel.berlin@gmail.com"
+                },
+                {
+                    "name": "Epartment E-commerce",
+                    "email": "support@epartment.nl"
+                }
+            ],
+            "description": "A Laravel Nova 4 form container for grouping fields that depend on other field values.",
+            "keywords": [
+                "field",
+                "laravel",
+                "nova",
+                "nova-4"
+            ],
+            "support": {
+                "source": "https://github.com/alexwenzel/nova-dependency-container/tree/1.2"
+            },
+            "time": "2022-06-20T21:47:29+00:00"
+        },
         {
             "name": "box/spout",
             "version": "v3.3.0",

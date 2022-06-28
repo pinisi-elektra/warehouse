@@ -28,47 +28,35 @@ class DefaultWarehousePolicy
 
     public function create(User $user): bool
     {
-        return true;
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
-            return true;
-        }
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
 
         return false;
     }
 
     public function update(User $user, $model): bool
     {
-        return true;
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
-            return true;
-        }
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
 
         return false;
     }
 
     public function delete(User $user, $model): bool
     {
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
-            return true;
-        }
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
 
         return false;
     }
 
     public function restore(User $user, $model): bool
     {
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
-            return true;
-        }
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
 
         return false;
     }
 
     public function forceDelete(User $user, $model): bool
     {
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
-            return true;
-        }
+        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
 
         return false;
     }

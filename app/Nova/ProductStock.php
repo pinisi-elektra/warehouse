@@ -45,8 +45,6 @@ class ProductStock extends Resource
 
             BelongsTo::make('Warehouse'),
 
-            HasMany::make('Activities', 'activities', ProductStockActivity::class),
-
             HasMany::make('Histories', 'histories', ProductStockHistory::class),
         ];
     }
