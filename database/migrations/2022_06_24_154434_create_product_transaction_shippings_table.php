@@ -15,8 +15,8 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->string('logistic_name');
-            $table->string('logistic_tracking_number');
+            $table->string('logistic_name')->nullable();
+            $table->string('logistic_tracking_number')->nullable();
             $table->string('photo_evidence')->nullable();
 
             $table->timestamps();
