@@ -8,6 +8,11 @@ use App\Models\ProductTransactionWarehouse;
 
 class ProductTransactionShippingObserver
 {
+    public function creating(ProductTransactionShipping $productTransactionShipping)
+    {
+        $productTransactionShipping->created_by = auth()->id();
+    }
+
     public function created(ProductTransactionShipping $productTransactionShipping)
     {
         if ($productTransactionShipping->productTransaction->productTransactionWarehouse->exists()) {

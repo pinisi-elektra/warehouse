@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use Alexwenzel\DependencyContainer\DependencyContainer;
 use Alexwenzel\DependencyContainer\HasDependencies;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction as ProductTransactionModel;
@@ -15,7 +14,6 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ProductTransaction extends Resource
@@ -79,6 +77,10 @@ class ProductTransaction extends Resource
                     return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
                 })
                 ->nullable(),
+
+            BelongsTo::make('Created by', 'creator', User::class)
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 

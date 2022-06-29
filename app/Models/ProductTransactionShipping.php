@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class ProductTransactionShipping extends Model
 {
+    use BlameableTrait;
+
     protected $fillable = [
         'photo_evidence',
         'date_shipped',

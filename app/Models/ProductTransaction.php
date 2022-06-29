@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class ProductTransaction extends Model
 {
+    use BlameableTrait;
+
     protected $with = ['productTransactionWarehouse'];
 
     public function product()

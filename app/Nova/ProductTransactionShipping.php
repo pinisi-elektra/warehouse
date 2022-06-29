@@ -6,6 +6,7 @@ use Alexwenzel\DependencyContainer\DependencyContainer;
 use Alexwenzel\DependencyContainer\HasDependencies;
 use App\Models\ProductTransactionShipping as ProductTransactionShippingModel;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
@@ -61,6 +62,10 @@ class ProductTransactionShipping extends Resource
             DateTime::make('Shipping / Received Date', 'date_shipped')
                 ->sortable()
                 ->rules('required'),
+
+            BelongsTo::make('Created by', 'creator', User::class)
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 
