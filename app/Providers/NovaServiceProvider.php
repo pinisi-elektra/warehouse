@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\RoleList;
 use App\Models\ProductRequest;
 use App\Models\ProductStockActivity;
 use App\Models\ProductTransaction;
@@ -57,7 +58,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function gate()
     {
         Gate::define('viewNova', function (User $user) {
-           return $user->isAdmin();
+            return $user->isRoleMatch(RoleList::WAREHOUSE_ADMIN) || $user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
         });
     }
 

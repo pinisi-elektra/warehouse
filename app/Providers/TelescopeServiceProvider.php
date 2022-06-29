@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\RoleList;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
@@ -64,7 +65,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     protected function gate()
     {
         Gate::define('viewTelescope', function (User $user) {
-            return $user->isAdmin();
+            return $user->isRoleMatch(RoleList::WAREHOUSE_ADMIN) || $user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
         });
     }
 }
