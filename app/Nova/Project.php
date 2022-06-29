@@ -17,12 +17,9 @@ class Project extends Resource
 
     public static $group = 'Company';
 
-    public static $displayInNavigation = false;
-
     public static $search = [
         ''
     ];
-
 
     public function fields(Request $request): array
     {
