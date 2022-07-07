@@ -25,7 +25,8 @@ class ProductTransactionShippingObserver
                 // decrease product stock from warehouse
                 $productStock = ProductStock::firstOrNew([
                     'product_id' => $productTransactionShipping->productTransaction->product_id,
-                    'warehouse_id' => $productTransactionShipping->productTransaction->warehouse_id
+                    'warehouse_id' => $productTransactionShipping->productTransaction->warehouse_id,
+                    'project_id' => $productTransactionShipping->productTransaction->project_id,
                 ]);
 
                 $productStock->quantity = $productStock->quantity - $productTransactionShipping->productTransaction->quantity;
@@ -41,7 +42,8 @@ class ProductTransactionShippingObserver
                 // increase product stock from warehouse
                 $productStock = ProductStock::firstOrNew([
                     'product_id' => $productTransactionShipping->productTransaction->product_id,
-                    'warehouse_id' => $productTransactionShipping->productTransaction->productTransactionWarehouse->warehouse_id
+                    'warehouse_id' => $productTransactionShipping->productTransaction->productTransactionWarehouse->warehouse_id,
+                    'project_id' => $productTransactionShipping->productTransaction->project_id,
                 ]);
 
                 $productStock->quantity = $productStock->quantity + $productTransactionShipping->productTransaction->quantity;

@@ -23,7 +23,8 @@ class ProductTransactionObserver
         if ($productTransaction->productTransactionWarehouse->type == 'return') {
             $filter = [
                 'product_id' => $productTransaction->product_id,
-                'warehouse_id' => $productTransaction->warehouse_id
+                'warehouse_id' => $productTransaction->warehouse_id,
+                'project_id' => $productTransaction->project_id,
             ];
 
             $productStock = ProductStock::firstOrNew($filter);

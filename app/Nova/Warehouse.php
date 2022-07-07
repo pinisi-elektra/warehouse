@@ -34,8 +34,6 @@ class Warehouse extends Resource
 
             Text::make('Address'),
 
-            BelongsTo::make('Company Group'),
-
             HasMany::make('Product Stock', 'productStock'),
         ];
     }

@@ -29,7 +29,7 @@ class ProductTransactionWarehouse extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Product Transaction', 'productTransaction', ProductTransaction::class)
+            BelongsTo::make('Product Transaction', 'productTransaction', StockTransfer::class)
                 ->showCreateRelationButton(),
 
             BelongsTo::make('Destination Warehouse', 'warehouse', Warehouse::class)
@@ -46,7 +46,6 @@ class ProductTransactionWarehouse extends Resource
             Select::make('Transaction Type', 'type')
                 ->options([
                     'request' => 'Request',
-                    'direct_move' => 'Direct Move',
                     'return' => 'Return',
                 ])
                 ->displayUsingLabels()

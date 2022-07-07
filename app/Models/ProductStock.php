@@ -10,6 +10,7 @@ class ProductStock extends Model
         'product_id',
         'warehouse_id',
         'quantity',
+        'project_id',
     ];
 
     public function warehouse() {

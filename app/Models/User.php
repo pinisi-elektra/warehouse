@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, BelongsToThrough;
 
     /**
      * The attributes that are mass assignable.
@@ -56,11 +57,11 @@ class User extends Authenticatable
 
     public function company()
     {
-        return $this->hasOne('App\Models\UserCompany');
+        return $this->belongsToMany(Company::class, UserCompany::class);
     }
 
-    public function companyGroup(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function role()
     {
-        return $this->hasMany('App\Models\UserCompanyGroup');
+        return $this->belongsToMany(Role::class, UserRole::class);
     }
 }

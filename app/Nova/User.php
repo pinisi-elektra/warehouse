@@ -6,9 +6,11 @@ use App\Helpers\RoleList;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
@@ -69,14 +71,9 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            HasOne::make('Company', 'company', UserCompany::class)
-                ->rules('required'),
+            BelongsToMany::make('Role', 'role', Role::class),
 
-            HasOne::make('Role', 'userRole', UserRole::class)
-                ->rules('required'),
-
-            HasMany::make('User Company Groups', 'companyGroup')
-                ->rules('required'),
+            BelongsToMany::make('Company', 'company', Company::class),
         ];
     }
 
