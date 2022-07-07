@@ -6,6 +6,8 @@ use App\Models\ProductStock;
 use App\Models\ProductTransaction;
 use App\Models\ProductTransactionVendor;
 use App\Models\ProductTransactionWarehouse;
+use Illuminate\Support\Facades\Log;
+use function PHPUnit\Framework\isNull;
 
 class ProductTransactionObserver
 {
@@ -16,12 +18,14 @@ class ProductTransactionObserver
     {
         $productTransaction->created_by = auth()->id();
 
-        $filter = [
-            'product_id' => $productTransaction->product_id,
-            'warehouse_id' => $productTransaction->warehouse_id
-        ];
+        if(is_null($productTransaction->productTransactionWarehouse)) return;
 
         if ($productTransaction->productTransactionWarehouse->type == 'return') {
+            $filter = [
+                'product_id' => $productTransaction->product_id,
+                'warehouse_id' => $productTransaction->warehouse_id
+            ];
+
             $productStock = ProductStock::firstOrNew($filter);
 
             $productStock->quantity = $productStock->quantity - $productTransaction->quantity;

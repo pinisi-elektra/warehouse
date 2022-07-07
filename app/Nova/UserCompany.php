@@ -19,11 +19,15 @@ class UserCompany extends Resource
         ''
     ];
 
+    public static $displayInNavigation = false;
+
     public function fields(Request $request): array
     {
         return [
             ID::make()->sortable(),
+
             BelongsTo::make('User'),
+
             BelongsTo::make('Company', 'company', 'App\Nova\Company')->showCreateRelationButton(),
         ];
     }

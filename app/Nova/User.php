@@ -23,7 +23,7 @@ class User extends Resource
      */
     public static $model = \App\Models\User::class;
 
-    public static $group = 'User';
+    public static $group = 'Master Data';
 
     /**
      * The single value that should be used to represent the resource when being displayed.

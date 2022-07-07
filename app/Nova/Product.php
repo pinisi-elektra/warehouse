@@ -19,7 +19,7 @@ class Product extends Resource
 
     public static $title = 'name';
 
-    public static $group = 'Product';
+    public static $group = 'Master Data';
 
     public static $search = [
         'name'

@@ -12,6 +12,7 @@ class ProductTransactionVendorObserver
         $filter = [
             'product_id' => $productTransactionVendor->productTransaction->product_id,
             'warehouse_id' => $productTransactionVendor->productTransaction->warehouse_id,
+            'project_id' => $productTransactionVendor->productTransaction->project_id,
         ];
 
         $productStock = ProductStock::firstOrNew($filter);

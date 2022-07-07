@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Models\ProductTransactionVendor as ProductTransactionVendorModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -28,11 +27,14 @@ class ProductTransactionVendor extends Resource
     {
         return [
             ID::make()->sortable(),
+
             Text::make('Vendor Name'),
+
             Text::make('Vendor Address'),
+
             Text::make('Vendor Phone Number'),
 
-            BelongsTo::make('Product Transaction', 'productTransaction', ProductTransaction::class),
+            BelongsTo::make('Product Transaction', 'productTransaction', Purchase::class),
 
             Select::make('Type')
                 ->options([

@@ -19,7 +19,7 @@ class ProductStock extends Resource
 
     public static $title = 'product.name';
 
-    public static $group = 'Product';
+    public static $group = 'Master Data';
 
     public static $search = [
         'id'
@@ -38,6 +38,8 @@ class ProductStock extends Resource
             ID::make()->sortable(),
 
             BelongsTo::make('Product'),
+
+            BelongsTo::make('Project'),
 
             Number::make('Quantity')
                 ->hideWhenUpdating()

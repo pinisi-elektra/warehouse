@@ -30,6 +30,8 @@ class ProductTransaction extends Resource
         ''
     ];
 
+    public static $displayInNavigation = false;
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->whereHas('product', function ($query) use ($request) {

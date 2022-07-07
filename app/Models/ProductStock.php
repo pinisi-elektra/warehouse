@@ -20,11 +20,11 @@ class ProductStock extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function activities() {
-        return $this->hasMany(ProductStockActivity::class);
-    }
-
     public function histories() {
         return $this->hasMany(ProductStockHistory::class);
+    }
+
+    public function project() {
+        return $this->belongsTo(Project::class);
     }
 }
