@@ -56,11 +56,11 @@ class User extends Authenticatable
 
     public function company()
     {
-        return $this->belongsToMany(Company::class, UserCompany::class);
+        return $this->hasOne(UserCompany::class);
     }
 
     public function role()
     {
-        return $this->belongsToMany(Role::class, UserRole::class);
+        return $this->hasOne( UserRole::class);
     }
 }

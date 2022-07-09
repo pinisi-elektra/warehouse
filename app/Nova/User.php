@@ -71,9 +71,8 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            BelongsToMany::make('Role', 'role', Role::class),
-
-            BelongsToMany::make('Company', 'company', Company::class),
+            HasOne::make('Role', 'role', Role::class),
+            HasOne::make('Company', 'company', Company::class),
         ];
     }
 
