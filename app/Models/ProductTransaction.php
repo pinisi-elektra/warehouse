@@ -31,6 +31,10 @@ class ProductTransaction extends Model
         return $this->hasOne('App\Models\ProductTransactionWarehouse');
     }
 
+    public function productTransactionSales() {
+        return $this->hasOne('App\Models\ProductTransactionSales');
+    }
+
     public function productTransactionShipping(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany('App\Models\ProductTransactionShipping');

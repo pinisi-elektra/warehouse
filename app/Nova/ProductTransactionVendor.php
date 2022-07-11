@@ -28,11 +28,21 @@ class ProductTransactionVendor extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Vendor Name'),
+            Text::make('Vendor Name', 'productVendor.name')
+                ->onlyOnDetail(),
 
-            Text::make('Vendor Address'),
+            Text::make('Vendor Email', 'productVendor.email')
+                ->onlyOnDetail(),
 
-            Text::make('Vendor Phone Number'),
+            Text::make('Vendor Phone', 'productVendor.phone')
+                ->onlyOnDetail(),
+
+            Text::make('Vendor Address', 'productVendor.address')
+                ->onlyOnDetail(),
+
+            BelongsTo::make('Product Vendor', 'productVendor', ProductVendor::class)
+                ->showCreateRelationButton()
+                ->rules('required'),
 
             BelongsTo::make('Product Transaction', 'productTransaction', Purchase::class),
 

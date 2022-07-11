@@ -12,4 +12,8 @@ class ProductTransactionVendor extends Model
     public function productTransaction() {
         return $this->belongsTo('App\Models\ProductTransaction');
     }
+
+    public function productVendor() {
+        return $this->belongsTo('App\Models\ProductVendor');
+    }
 }
