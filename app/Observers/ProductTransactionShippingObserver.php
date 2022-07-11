@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\ProductStock;
 use App\Models\ProductTransactionShipping;
-use App\Models\ProductTransactionWarehouse;
+use Illuminate\Support\Facades\Log;
 
 class ProductTransactionShippingObserver
 {
@@ -16,6 +16,12 @@ class ProductTransactionShippingObserver
     public function created(ProductTransactionShipping $productTransactionShipping)
     {
         if ($productTransactionShipping->productTransaction->productTransactionWarehouse->exists()) {
+            $filter = [
+                'product_id' => $productTransactionShipping->productTransaction->product_id,
+                'warehouse_id' => $productTransactionShipping->productTransaction->warehouse_id,
+                'project_id' => $productTransactionShipping->productTransaction->project_id,
+            ];
+
             if ($productTransactionShipping->shipping_type == 'send') {
                 // mark status shipped
                 $productTransactionShipping->productTransaction->productTransactionWarehouse->update([
@@ -23,11 +29,7 @@ class ProductTransactionShippingObserver
                 ]);
 
                 // decrease product stock from warehouse
-                $productStock = ProductStock::firstOrNew([
-                    'product_id' => $productTransactionShipping->productTransaction->product_id,
-                    'warehouse_id' => $productTransactionShipping->productTransaction->warehouse_id,
-                    'project_id' => $productTransactionShipping->productTransaction->project_id,
-                ]);
+                $productStock = ProductStock::firstOrNew($filter);
 
                 $productStock->quantity = $productStock->quantity - $productTransactionShipping->productTransaction->quantity;
                 $productStock->save();
@@ -40,11 +42,7 @@ class ProductTransactionShippingObserver
                 ]);
 
                 // increase product stock from warehouse
-                $productStock = ProductStock::firstOrNew([
-                    'product_id' => $productTransactionShipping->productTransaction->product_id,
-                    'warehouse_id' => $productTransactionShipping->productTransaction->productTransactionWarehouse->warehouse_id,
-                    'project_id' => $productTransactionShipping->productTransaction->project_id,
-                ]);
+                $productStock = ProductStock::firstOrNew($filter);
 
                 $productStock->quantity = $productStock->quantity + $productTransactionShipping->productTransaction->quantity;
                 $productStock->save();

@@ -26,7 +26,7 @@ class StockTransfer extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereHas('productTransactionVendors');
+        return $query->whereHas('productTransactionWarehouse');
     }
 
     public function fields(Request $request): array
