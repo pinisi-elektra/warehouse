@@ -4,8 +4,10 @@ namespace App\Nova;
 
 use Alexwenzel\DependencyContainer\DependencyContainer;
 use Alexwenzel\DependencyContainer\HasDependencies;
+use App\Helpers\RoleList;
 use App\Models\ProductTransactionShipping as ProductTransactionShippingModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -33,10 +35,12 @@ class ProductTransactionShipping extends Resource
             ID::make()->sortable(),
 
             Select::make('Shipping Type', 'shipping_type')
-                ->options([
-                    'send' => 'Send',
-                    'received' => 'Received',
-                ])
+                ->options(function () {
+                    return array_filter([
+                        'send' => Auth::user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN) ? 'Send' : null,
+                        'received' => 'Received'
+                    ]);
+                })
                 ->displayUsingLabels()
                 ->sortable(),
 
