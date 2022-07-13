@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\Project as ProjectModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -34,6 +35,8 @@ class Project extends Resource
                 ->rules('required')
                 ->showCreateRelationButton()
                 ->searchable(),
+
+            HasMany::make('Product Stock', 'productStock'),
         ];
     }
 

@@ -13,4 +13,8 @@ class Project extends Model
     {
         return $this->belongsTo('App\Models\Company');
     }
+
+    public function productStock() {
+        return $this->hasMany('App\Models\ProductStock');
+    }
 }

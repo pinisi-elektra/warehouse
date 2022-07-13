@@ -8,11 +8,23 @@ use App\Models\ProductTransactionSales;
 use App\Models\ProductTransactionShipping;
 use App\Models\ProductTransactionVendor;
 use App\Models\User;
+use App\Nova\Dashboards\Main;
+use App\Nova\Product;
+use App\Nova\ProductStock;
+use App\Nova\ProductVendor;
+use App\Nova\Project;
+use App\Nova\Purchase;
+use App\Nova\Sales;
+use App\Nova\StockTransfer;
+use App\Nova\Warehouse;
 use App\Observers\ProductTransactionObserver;
 use App\Observers\ProductTransactionSalesObserver;
 use App\Observers\ProductTransactionShippingObserver;
 use App\Observers\ProductTransactionVendorObserver;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Observable;
@@ -32,6 +44,43 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Observable::make(ProductTransactionShipping::class, ProductTransactionShippingObserver::class);
         Observable::make(ProductTransactionVendor::class, ProductTransactionVendorObserver::class);
         Observable::make(ProductTransactionSales::class, ProductTransactionSalesObserver::class);
+
+        Nova::mainMenu(function (Request $request) {
+            if ($request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) {
+                return [
+                    MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                    MenuSection::make('Main Feature', [
+                        MenuItem::resource(Purchase::class),
+                        MenuItem::resource(StockTransfer::class),
+                        MenuItem::resource(Sales::class),
+                    ])->icon('collection'),
+
+                    MenuSection::make('Master Data', [
+                        MenuItem::resource(ProductStock::class),
+                        MenuItem::resource(Product::class),
+                        MenuItem::resource(Warehouse::class),
+                        MenuItem::resource(ProductVendor::class),
+                        MenuItem::resource(Project::class),
+                    ])->icon('database')->collapsable(),
+                ];
+            }
+
+            return [
+                MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                MenuSection::make('Main Feature', [
+                    MenuItem::resource(StockTransfer::class),
+                    MenuItem::resource(Sales::class),
+                ])->icon('collection'),
+
+                MenuSection::make('Master Data', [
+                    MenuItem::resource(ProductStock::class),
+                    MenuItem::resource(Product::class),
+                    MenuItem::resource(ProductVendor::class),
+                ])->icon('database')->collapsable(),
+            ];
+        });
     }
 
     /**
@@ -42,9 +91,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use Illuminate\Http\Request;
@@ -40,13 +41,8 @@ class StockTransfer extends Resource
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
 
-            Select::make('Quantity Volume')
-                ->options([
-                    'pcs' => 'Pieces',
-                    'kg' => 'Kilograms',
-                    'gram' => 'Grams',
-                    'inch' => 'Inch',
-                ])
+            Select::make('Quantity Unit', 'quantity_volume')
+                ->options(QuantityUnit::new()->list)
                 ->displayUsingLabels(),
 
             BelongsTo::make('Product')
