@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class StockTransfer extends Resource
@@ -38,6 +39,15 @@ class StockTransfer extends Resource
 
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
+
+            Select::make('Quantity Volume')
+                ->options([
+                    'pcs' => 'Pieces',
+                    'kg' => 'Kilograms',
+                    'gram' => 'Grams',
+                    'inch' => 'Inch',
+                ])
+                ->displayUsingLabels(),
 
             BelongsTo::make('Product')
                 ->rules('required')

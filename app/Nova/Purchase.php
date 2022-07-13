@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Purchase extends Resource
@@ -40,6 +41,15 @@ class Purchase extends Resource
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
 
+            Select::make('Quantity Volume')
+                ->options([
+                    'pcs' => 'Pieces',
+                    'kg' => 'Kilograms',
+                    'gram' => 'Grams',
+                    'inch' => 'Inch',
+                ])
+                ->displayUsingLabels(),
+
             BelongsTo::make('Product')
                 ->rules('required')
                 ->showCreateRelationButton()
@@ -51,12 +61,6 @@ class Purchase extends Resource
                 ->searchable(),
 
             HasOne::make('Vendor Detail', 'productTransactionVendors', ProductTransactionVendor::class)
-                ->canSee(function ($request) {
-                    return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
-                })
-                ->nullable(),
-
-            HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
                 ->canSee(function ($request) {
                     return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
                 })

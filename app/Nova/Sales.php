@@ -43,6 +43,15 @@ class Sales extends Resource
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
 
+            Select::make('Quantity Volume')
+                ->options([
+                    'pcs' => 'Pieces',
+                    'kg' => 'Kilograms',
+                    'gram' => 'Grams',
+                    'inch' => 'Inch',
+                ])
+                ->displayUsingLabels(),
+
             BelongsTo::make('Product')
                 ->rules('required')
                 ->showCreateRelationButton()
