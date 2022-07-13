@@ -62,9 +62,6 @@ class StockTransfer extends Resource
                 ->nullable(),
 
             HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
-                ->canSee(function ($request) {
-                    return $request->user()->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN);
-                })
                 ->nullable(),
         ];
     }
