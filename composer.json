@@ -15,6 +15,7 @@
         "laravel/socialite": "^5.5",
         "laravel/telescope": "^4.8",
         "laravel/tinker": "^2.7",
+        "maatwebsite/laravel-nova-excel": "^1.3",
         "predis/predis": "^1.1",
         "richan-fongdasen/eloquent-blameable": "^1.8",
         "sentry/sentry-laravel": "^2.12",

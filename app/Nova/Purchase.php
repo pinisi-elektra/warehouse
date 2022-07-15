@@ -13,7 +13,9 @@ use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Purchase extends Resource
 {
@@ -34,8 +36,14 @@ class Purchase extends Resource
 
     public function fields(Request $request): array
     {
+        if (!$request->count) $request->count = 0;
+
         return [
-            ID::make()->sortable(),
+            Text::make('#', function () use ($request) {
+                $request->count += 1;
+
+                return $request->page == 1 ? $request->count : $request->count + ($request->perPage * ($request->page - 1));
+            })->onlyOnIndex(),
 
             BelongsTo::make('Project', 'project', Project::class),
 
@@ -81,6 +89,8 @@ class Purchase extends Resource
 
     public function actions(Request $request): array
     {
-        return [];
+        return [
+            new DownloadExcel()
+        ];
     }
 }

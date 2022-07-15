@@ -42,8 +42,6 @@ class DefaultWarehousePolicy
 
     public function delete(User $user, $model): bool
     {
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
-
         return false;
     }
 
@@ -56,8 +54,6 @@ class DefaultWarehousePolicy
 
     public function forceDelete(User $user, $model): bool
     {
-        if ($user->isRoleMatch(RoleList::CENTRAL_WAREHOUSE_ADMIN)) return true;
-
         return false;
     }
 }

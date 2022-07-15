@@ -25,8 +25,14 @@ class Warehouse extends Resource
 
     public function fields(Request $request): array
     {
+        if (!$request->count) $request->count = 0;
+
         return [
-            ID::make()->sortable(),
+            Text::make('#', function () use ($request) {
+                $request->count += 1;
+
+                return $request->page == 1 ? $request->count : $request->count + ($request->perPage * ($request->page - 1));
+            })->onlyOnIndex(),
 
             Text::make('Name')
                 ->rules('required')
