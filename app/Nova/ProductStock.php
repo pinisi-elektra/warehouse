@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class ProductStock extends Resource
 {
@@ -29,9 +30,7 @@ class ProductStock extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-//        return $query->whereHas('product', function ($query) use ($request) {
-//            $query->where('company_id', Auth::user()->company()->id);
-//        });
+        //
     }
 
     public function fields(Request $request): array
@@ -78,6 +77,8 @@ class ProductStock extends Resource
 
     public function actions(Request $request): array
     {
-        return [];
+        return [
+            new DownloadExcel()
+        ];
     }
 }
