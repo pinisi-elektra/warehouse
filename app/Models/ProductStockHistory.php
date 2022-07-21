@@ -8,7 +8,7 @@ class ProductStockHistory extends Model
 {
     protected $fillable = ['user_id', 'product_stock_id', 'description'];
 
-    public function product_stock() {
+    public function productStock() {
         return $this->belongsTo('App\Models\ProductStock');
     }
 

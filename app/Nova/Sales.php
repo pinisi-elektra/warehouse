@@ -6,6 +6,9 @@ use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use App\Models\ProductTransactionSales as ProductTransactionSalesModel;
+use App\Nova\Filters\FilterByDateEnd;
+use App\Nova\Filters\FilterByDateStart;
+use App\Nova\Filters\FilterByProject;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -82,7 +85,11 @@ class Sales extends Resource
 
     public function filters(Request $request): array
     {
-        return [];
+        return [
+            new FilterByProject(),
+            new FilterByDateStart(),
+            new FilterByDateEnd()
+        ];
     }
 
     public function lenses(Request $request): array
