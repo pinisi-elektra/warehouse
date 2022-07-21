@@ -3,6 +3,10 @@
 namespace App\Nova;
 
 use App\Models\ProductStock as ProductStockModel;
+use App\Nova\Filters\FilterByDateEnd;
+use App\Nova\Filters\FilterByDateStart;
+use App\Nova\Filters\FilterByProject;
+use App\Nova\Filters\FilterByWarehouse;
 use App\Nova\Metrics\NewProductStock;
 use App\Nova\Metrics\ProductStockPerWarehouse;
 use Illuminate\Http\Request;
@@ -48,13 +52,13 @@ class ProductStock extends Resource
 
             BelongsTo::make('Project'),
 
-            Number::make('Quantity')
-                ->hideWhenUpdating()
-                ->sortable(),
-
             BelongsTo::make('Warehouse'),
 
             HasMany::make('Histories', 'histories', ProductStockHistory::class),
+
+            Number::make('Quantity')
+                ->hideWhenUpdating()
+                ->sortable(),
         ];
     }
 
@@ -67,7 +71,10 @@ class ProductStock extends Resource
 
     public function filters(Request $request): array
     {
-        return [];
+        return [
+            new FilterByProject(),
+            new FilterByWarehouse(),
+        ];
     }
 
     public function lenses(Request $request): array
