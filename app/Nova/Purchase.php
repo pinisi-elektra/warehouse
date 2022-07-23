@@ -9,11 +9,8 @@ use App\Nova\Filters\FilterByDateEnd;
 use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -36,6 +33,18 @@ class Purchase extends Resource
     {
         return $query->whereHas('productTransactionVendors');
     }
+
+    /**
+     * The pagination per-page options configured for this resource.
+     *
+     * @return array
+     */
+//    public static function perPageOptions()
+//    {
+//        $purchaseSum = ProductTransaction::withCount('productTransactionVendors');
+//
+//        return [50, 100, 150, $purchaseSum];
+//    }
 
     public function fields(Request $request): array
     {
@@ -97,7 +106,17 @@ class Purchase extends Resource
     public function actions(Request $request): array
     {
         return [
-            new DownloadExcel()
+            (new DownloadExcel())
+                ->askForWriterType()
+                ->withHeadings()
+                ->only(
+                    'Project',
+                    'Warehouse',
+                    'Product',
+                    'Quantity',
+                    'Quantity Unit',
+                    'created_at',
+                )
         ];
     }
 }

@@ -99,7 +99,17 @@ class StockTransfer extends Resource
     public function actions(Request $request): array
     {
         return [
-            new DownloadExcel(),
+            (new DownloadExcel())
+                ->askForWriterType()
+                ->withHeadings()
+                ->only(
+                    'Project',
+                    'Warehouse',
+                    'Product',
+                    'Quantity',
+                    'Quantity Unit',
+                    'created_at',
+                )
         ];
     }
 }
