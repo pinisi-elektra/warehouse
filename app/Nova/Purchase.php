@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
+use App\Nova\Actions\ExportAllRecordToFile;
 use App\Nova\Filters\FilterByDateEnd;
 use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
@@ -15,7 +16,6 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Purchase extends Resource
 {
@@ -33,18 +33,6 @@ class Purchase extends Resource
     {
         return $query->whereHas('productTransactionVendors');
     }
-
-    /**
-     * The pagination per-page options configured for this resource.
-     *
-     * @return array
-     */
-//    public static function perPageOptions()
-//    {
-//        $purchaseSum = ProductTransaction::withCount('productTransactionVendors');
-//
-//        return [50, 100, 150, $purchaseSum];
-//    }
 
     public function fields(Request $request): array
     {
@@ -106,17 +94,10 @@ class Purchase extends Resource
     public function actions(Request $request): array
     {
         return [
-            (new DownloadExcel())
-                ->askForWriterType()
-                ->withHeadings()
-                ->only(
-                    'Project',
-                    'Warehouse',
-                    'Product',
-                    'Quantity',
-                    'Quantity Unit',
-                    'created_at',
-                )
+            ExportAllRecordToFile::make('Export All Purchase Record to File')
+                ->setRequest($request)
+                ->setTransactionType('purchase')
+                ->standalone()
         ];
     }
 }

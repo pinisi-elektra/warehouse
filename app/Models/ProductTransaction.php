@@ -9,8 +9,6 @@ class ProductTransaction extends Model
 {
     use BlameableTrait;
 
-    protected $with = ['productTransactionWarehouse'];
-
     public function product()
     {
         return $this->belongsTo('App\Models\Product');

@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
+use App\Nova\Actions\ExportAllRecordToFile;
 use App\Nova\Filters\FilterByDateEnd;
 use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
@@ -99,17 +100,10 @@ class StockTransfer extends Resource
     public function actions(Request $request): array
     {
         return [
-            (new DownloadExcel())
-                ->askForWriterType()
-                ->withHeadings()
-                ->only(
-                    'Project',
-                    'Warehouse',
-                    'Product',
-                    'Quantity',
-                    'Quantity Unit',
-                    'created_at',
-                )
+            ExportAllRecordToFile::make('Export All Purchase Record to File')
+                ->setRequest($request)
+                ->setTransactionType('stock_transfer')
+                ->standalone()
         ];
     }
 }

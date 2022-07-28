@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\ProductTransactionExport;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/admin');
 });
+
+Route::get('/v1/export/product-transactions', \App\Http\Controllers\ExportProductTransactionController::class)->name('export.product-transactions');
 
 require __DIR__.'/auth.php';
