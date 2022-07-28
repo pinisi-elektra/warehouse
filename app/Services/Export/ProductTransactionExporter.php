@@ -3,7 +3,6 @@
 namespace App\Services\Export;
 
 use App\Exports\ProductTransactionExport;
-use App\Models\ProductTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

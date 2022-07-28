@@ -6,6 +6,7 @@ use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use App\Models\ProductTransactionSales as ProductTransactionSalesModel;
+use App\Nova\Actions\ExportAllRecordToFile;
 use App\Nova\Filters\FilterByDateEnd;
 use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
@@ -100,17 +101,10 @@ class Sales extends Resource
     public function actions(Request $request): array
     {
         return [
-            (new DownloadExcel())
-                ->askForWriterType()
-                ->withHeadings()
-                ->only(
-                    'Project',
-                    'Warehouse',
-                    'Product',
-                    'Quantity',
-                    'Quantity Unit',
-                    'created_at',
-                )
+            ExportAllRecordToFile::make('Export All Sales Record to File')
+                ->setRequest($request)
+                ->setTransactionType('sales')
+                ->standalone()
         ];
     }
 }

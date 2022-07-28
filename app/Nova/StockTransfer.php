@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Helpers\QuantityUnit;
-use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use App\Nova\Actions\ExportAllRecordToFile;
 use App\Nova\Filters\FilterByDateEnd;
@@ -13,12 +12,10 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class StockTransfer extends Resource
 {
@@ -100,7 +97,7 @@ class StockTransfer extends Resource
     public function actions(Request $request): array
     {
         return [
-            ExportAllRecordToFile::make('Export All Purchase Record to File')
+            ExportAllRecordToFile::make('Export All Stock Transfer Record to File')
                 ->setRequest($request)
                 ->setTransactionType('stock_transfer')
                 ->standalone()
