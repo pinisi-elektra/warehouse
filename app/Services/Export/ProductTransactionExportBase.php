@@ -5,8 +5,12 @@ namespace App\Services\Export;
 use App\Exports\ProductTransactionExport;
 use App\Models\ProductTransaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Laravel\Nova\Actions\Action;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductTransactionExportBase
@@ -20,7 +24,7 @@ class ProductTransactionExportBase
 
     protected function getQuery(array $filter)
     {
-       return [];
+        return [];
     }
 
     protected function formatPurchaseData(ProductTransaction $productTransaction): array
@@ -40,7 +44,22 @@ class ProductTransactionExportBase
         return $data;
     }
 
-    public function export(Request $request) {
+    protected function checkFilter(Builder $query, array $filter): Builder
+    {
+        if (Arr::hasAny($filter, ['project_id', 'created_at'])) {
+            if ($filter['created_at'][0] !== '') $query->whereDate('created_at', '>=', $filter['created_at'][0]);
+            if ($filter['created_at'][1] !== '') $query->whereDate('created_at', '<=', $filter['created_at'][1]);
+
+            $filter = Arr::except($filter, 'created_at');
+
+            return $query->where($filter);
+        }
+
+        return $query;
+    }
+
+    public function export(Request $request)
+    {
         $filter = [];
 
         if ($request->has('params')) {
@@ -53,18 +72,24 @@ class ProductTransactionExportBase
 
             if (Arr::has($decodedFilter, '1.App\\Nova\\Filters\\FilterByDateStart')) {
                 $filter['created_at'][0] = Arr::get($decodedFilter, '1.App\\Nova\\Filters\\FilterByDateStart');
-                if ($filter['created_at'][0] == '') unset($filter['created_at']);
             }
 
             if (Arr::has($decodedFilter, '2.App\\Nova\\Filters\\FilterByDateEnd')) {
                 $filter['created_at'][1] = Arr::get($decodedFilter, '2.App\\Nova\\Filters\\FilterByDateEnd');
-                if ($filter['created_at'][1] == '') unset($filter['created_at']);
             }
         }
 
         $query = $this->getQuery($filter);
 
         $formattedData = $this->getPurchaseData($query);
+
+        if (count($formattedData) == 0) {
+            Log::warning('No data to export', ['filter' => $filter]);
+
+            return redirect()
+                ->back()
+                ->with('error', 'No data found');
+        }
 
         $time = Carbon::now()->toDateString();
 

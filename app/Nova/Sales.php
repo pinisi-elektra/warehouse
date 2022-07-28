@@ -5,22 +5,18 @@ namespace App\Nova;
 use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
-use App\Models\ProductTransactionSales as ProductTransactionSalesModel;
 use App\Nova\Actions\ExportAllRecordToFile;
 use App\Nova\Filters\FilterByDateEnd;
 use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Sales extends Resource
 {
@@ -76,6 +72,7 @@ class Sales extends Resource
                 })
                 ->nullable(),
 
+            DateTime::make('Created At'),
         ];
     }
 

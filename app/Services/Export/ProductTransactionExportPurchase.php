@@ -12,15 +12,7 @@ class ProductTransactionExportPurchase extends ProductTransactionExportBase
     {
         $query = ProductTransaction::query();
 
-        if (Arr::hasAny($filter, ['project_id', 'created_at'])) {
-            if (Arr::has($filter, 'created_at')) {
-                $query->whereBetween('created_at', $filter['created_at']);
-
-                $filter = Arr::except($filter, 'created_at');
-            }
-
-            $query->where($filter);
-        }
+        $query = $this->checkFilter($query, $filter);
 
         return $query
             ->whereHas('productTransactionVendors')

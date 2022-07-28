@@ -18,6 +18,6 @@ class FilterByDateEnd extends DateFilter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        return $query->where('created_at', '<=', Carbon::parse($value));
+        return $query->whereDate('created_at', '<=', $value);
     }
 }

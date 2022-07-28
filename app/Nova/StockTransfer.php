@@ -10,6 +10,7 @@ use App\Nova\Filters\FilterByDateStart;
 use App\Nova\Filters\FilterByProject;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
@@ -72,6 +73,8 @@ class StockTransfer extends Resource
 
             HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
                 ->nullable(),
+
+            DateTime::make('Created At'),
         ];
     }
 
