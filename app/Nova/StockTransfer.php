@@ -74,7 +74,9 @@ class StockTransfer extends Resource
             HasMany::make('Transaction Shipping History', 'productTransactionShipping', ProductTransactionShipping::class)
                 ->nullable(),
 
-            DateTime::make('Created At'),
+            DateTime::make('Created At')
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 

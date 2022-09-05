@@ -72,7 +72,9 @@ class Sales extends Resource
                 })
                 ->nullable(),
 
-            DateTime::make('Created At'),
+            DateTime::make('Created At')
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 
