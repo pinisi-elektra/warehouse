@@ -42,6 +42,7 @@ class ProductTransactionShippingObserver
                 ]);
 
                 // increase product stock from warehouse
+                $filter['warehouse_id'] = $productTransactionShipping->productTransaction->productTransactionWarehouse->warehouse_id;
                 $productStock = ProductStock::firstOrNew($filter);
 
                 $productStock->quantity = $productStock->quantity + $productTransactionShipping->productTransaction->quantity;
