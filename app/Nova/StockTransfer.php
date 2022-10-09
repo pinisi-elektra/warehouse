@@ -51,9 +51,11 @@ class StockTransfer extends Resource
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
 
-            Select::make('Quantity Unit', 'quantity_volume')
-                ->options(QuantityUnit::new()->list)
-                ->displayUsingLabels(),
+            Text::make('Quantity Unit', function () {
+                return $this->product->quantity_unit ?? "";
+            })
+                ->showOnIndex()
+                ->showOnDetail(),
 
             BelongsTo::make('Product')
                 ->rules('required')

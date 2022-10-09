@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\Product as ProductModel;
 use App\Nova\Metrics\ProductValue;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -17,7 +18,7 @@ class Product extends Resource
 {
     public static $model = ProductModel::class;
 
-    public static $title = 'name';
+    public static $title = 'fullName';
 
     public static $group = 'Master Data';
 
@@ -39,6 +40,10 @@ class Product extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required'),
+
+            Select::make('Quantity Unit')
+                ->options(QuantityUnit::new()->list)
+                ->displayUsingLabels(),
 
             Text::make('Model')->sortable()->nullable(),
 

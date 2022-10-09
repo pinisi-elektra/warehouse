@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Helpers\QuantityUnit;
 use App\Helpers\RoleList;
 use App\Models\ProductTransaction;
 use App\Nova\Actions\ExportAllRecordToFile;
@@ -14,7 +13,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -48,17 +46,18 @@ class Purchase extends Resource
 
             BelongsTo::make('Project', 'project', Project::class),
 
+            BelongsTo::make('Product')
+                ->rules('required')
+                ->showCreateRelationButton(),
+
             Number::make('Quantity', 'quantity')
                 ->rules('required', 'numeric', 'min:1'),
 
-            Select::make('Quantity Unit', 'quantity_volume')
-                ->options(QuantityUnit::new()->list)
-                ->displayUsingLabels(),
-
-            BelongsTo::make('Product')
-                ->rules('required')
-                ->showCreateRelationButton()
-                ->searchable(),
+            Text::make('Quantity Unit', function () {
+                return $this->product->quantity_unit ?? "";
+            })
+                ->showOnIndex()
+                ->showOnDetail(),
 
             BelongsTo::make('Warehouse')
                 ->rules('required')
